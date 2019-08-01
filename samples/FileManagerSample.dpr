@@ -28,7 +28,7 @@ uses
   FileManager.Providers.Controllers.FileManager in '..\src\providers\controllers\FileManager.Providers.Controllers.FileManager.pas' {ControllerFileManager: TDataModule},
   FileManager.Providers.PathControl in '..\src\providers\FileManager.Providers.PathControl.pas',
   FileManager in '..\src\FileManager.pas',
-  FileManager.Providers.Modulos.Base in '..\src\providers\modulos\FileManager.Providers.Modulos.Base.pas' {DMBase: TDataModule};
+  FileManager.Providers.Controllers.Base in '..\src\providers\controllers\FileManager.Providers.Controllers.Base.pas' {DMBase: TDataModule};
 
 {$R *.res}
 

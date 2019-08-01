@@ -12,39 +12,35 @@ type
     lblTable: TLabel;
     edtTableName: TEdit;
     lblOrigem: TLabel;
-    edtOrigem: TEdit;
-    edtTamanhoMaximo: TEdit;
+    edtIdOrigin: TEdit;
+    edtMaxFileSize: TEdit;
     lblTamanhoMaximo: TLabel;
-    GroupBox1: TGroupBox;
-    chkImagens: TCheckBox;
+    grpFilesType: TGroupBox;
+    chkImages: TCheckBox;
     chkWord: TCheckBox;
     chkExcel: TCheckBox;
     chkPowerPoint: TCheckBox;
-    chkArquivosZipados: TCheckBox;
+    chkZIP: TCheckBox;
     chkPDF: TCheckBox;
     lblCadastro: TLabel;
-    edtCadastro: TEdit;
+    edtIdGroup: TEdit;
     lblSistema: TLabel;
     lblPai: TLabel;
     edtFatherGroup: TEdit;
     Label1: TLabel;
-    edtDescricaoPastaRaiz: TEdit;
-    GroupBox2: TGroupBox;
-    CheckBox1: TCheckBox;
-    CheckBox2: TCheckBox;
-    CheckBox3: TCheckBox;
-    CheckBox4: TCheckBox;
+    edtMainFolderName: TEdit;
+    grpPermissions: TGroupBox;
+    chkUpdate: TCheckBox;
+    chkDelete: TCheckBox;
+    chkDownload: TCheckBox;
+    chkUpload: TCheckBox;
     GroupBox3: TGroupBox;
-    CheckBox5: TCheckBox;
-    CheckBox6: TCheckBox;
-    CheckBox7: TCheckBox;
-    CheckBox8: TCheckBox;
-    edtSistema: TEdit;
+    chkGroupUpdate: TCheckBox;
+    chkGroupDelete: TCheckBox;
+    chkGroupDownload: TCheckBox;
+    chkGroupUpload: TCheckBox;
+    edtSystemName: TEdit;
     procedure btnAbrirClick(Sender: TObject);
-  private
-
-  public
-    { Public declarations }
   end;
 
 var
@@ -60,21 +56,22 @@ var
 begin
   FileManager := TFileManager.Create;
   try
-    FileManager.MaxFileSize := FileManager.ONE_MB_SIZE * StrToInt64Def(edtTamanhoMaximo.Text, 1);
-    FileManager.FileServer.Origem := edtOrigem.Text;
-    FileManager.FileServer.Tabela := edtTableName.Text;
-    FileManager.FileServer.Sistema := edtSistema.Text;
+    FileManager.MaxFileSize := FileManager.ONE_MB_SIZE * StrToInt64Def(edtMaxFileSize.Text, 1);
+    FileManager.FileServer.IdOrigin := edtIdOrigin.Text;
+    FileManager.FileServer.TableName := edtTableName.Text;
+    FileManager.FileServer.SystemName := edtSystemName.Text;
     FileManager.FileServer.FatherGroup := edtFatherGroup.Text;
-    FileManager.FileServer.IdCadastro := edtCadastro.Text;
-    FileManager.FileServer.MainFolderName := edtDescricaoPastaRaiz.Text;
+    FileManager.FileServer.IdGroup := edtIdGroup.Text;
+    FileManager.FileServer.MainFolderName := edtMainFolderName.Text;
     FileManager.Execute;
   finally
     FileManager.Free;
-    edtOrigem.Clear;
+    edtIdOrigin.Clear;
     edtTableName.Clear;
     edtFatherGroup.Clear;
-    edtCadastro.Clear;
-    edtDescricaoPastaRaiz.Clear;
+    edtMainFolderName.Clear;
+    edtFatherGroup.Clear;
+    edtSystemName.Clear;
   end;
 end;
 

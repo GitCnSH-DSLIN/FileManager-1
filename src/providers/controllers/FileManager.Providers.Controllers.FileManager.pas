@@ -3,7 +3,7 @@ unit FileManager.Providers.Controllers.FileManager;
 interface
 
 uses
-  System.SysUtils, System.Classes, FileManager.Providers.Modulos.Base, System.Math, System.IOUtils,
+  System.SysUtils, System.Classes, FileManager.Providers.Controllers.Base, System.Math, System.IOUtils,
   FileManager.Providers.Aguarde.Impl, REST.Types,FileManager. Providers.Response.Default, FileManager.Providers.Response.Intf,
   FireDAC.Stan.Intf, System.JSON, FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
   FireDAC.DApt.Intf, Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, DataSet.Serialize.Helper, FileManager.Providers.Constants,
@@ -55,7 +55,7 @@ type
   private
     TempFiles: TStringList;
   public
-    procedure CreateCadastro(const Origem, Tabela, Sistema: string; const CallBack: TResponseCallBack);
+    procedure CreateCadastro(const IdOrigin, TableName, SystemName: string; const CallBack: TResponseCallBack);
     procedure CreateGroup(const IdAgrupamentoPai: string; const CallBack: TResponseCallBack);
     procedure CreateFolder(const FolderName: string; const CallBack: TResponseCallBack);
     procedure EditGroup(const GroupData: TJSONObject; const CallBack: TResponseCallBack);
@@ -114,7 +114,7 @@ begin
     .Start;
 end;
 
-procedure TControllerFileManager.CreateCadastro(const Origem, Tabela, Sistema: string; const CallBack: TResponseCallBack);
+procedure TControllerFileManager.CreateCadastro(const IdOrigin, TableName, SystemName: string; const CallBack: TResponseCallBack);
 var
   Response: IResponse;
 begin
@@ -130,9 +130,9 @@ begin
         try
           mmtCadastro.Table.Clear;
           mmtCadastro.Append;
-          mmtCadastroORIGEM_CAD.AsString := Origem;
-          mmtCadastroTABELA_CAD.AsString := Tabela;
-          mmtCadastroSISTEMA_CAD.AsString := Sistema;
+          mmtCadastroORIGEM_CAD.AsString := IdOrigin;
+          mmtCadastroTABELA_CAD.AsString := TableName;
+          mmtCadastroSISTEMA_CAD.AsString := SystemName;
           mmtCadastro.Post;
           Request.SetResource('Cadastro').AddBody(mmtCadastro.ToJSONObject).POST(Response);
         finally

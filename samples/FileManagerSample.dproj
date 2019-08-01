@@ -157,8 +157,9 @@
         </DCCReference>
         <DCCReference Include="..\src\providers\FileManager.Providers.PathControl.pas"/>
         <DCCReference Include="..\src\FileManager.pas"/>
-        <DCCReference Include="..\src\providers\modulos\FileManager.Providers.Modulos.Base.pas">
+        <DCCReference Include="..\src\providers\controllers\FileManager.Providers.Controllers.Base.pas">
             <Form>DMBase</Form>
+            <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <BuildConfiguration Include="Release">

@@ -18,12 +18,12 @@ type
     FController: TControllerFileManager;
     FPathControl: TPathControl;
     FWait: TActivityIndicator;
-    FIdCadastro: string;
-    FTabela: string;
-    FSistema: string;
+    FIdGroup: string;
+    FTableName: string;
+    FSystemName: string;
     FFatherGroup: string;
     FMainFolderName: string;
-    FOrigem: string;
+    FIdOrigin: string;
     FPathTree: TLabel;
     FPreviousImage: TImage;
     procedure OnStart(const Response: IResponse);
@@ -50,10 +50,10 @@ type
   public
     property FatherGroup: string read FFatherGroup write SetFatherGroup;
     property MainFolderName: string read FMainFolderName write SetMainFolderName;
-    property Origem: string read FOrigem write SetOrigem;
-    property Tabela: string read FTabela write SetTabela;
-    property Sistema: string read FSistema write SetSistema;
-    property IdCadastro: string read FIdCadastro write SetIdCadastro;
+    property IdOrigin: string read FIdOrigin write SetOrigem;
+    property TableName: string read FTableName write SetTabela;
+    property SystemName: string read FSystemName write SetSistema;
+    property IdGroup: string read FIdGroup write SetIdCadastro;
     property PathTree: TLabel read FPathTree write SetPathTree;
     property PreviousImage: TImage read FPreviousImage write SetPreviousImage;
     constructor Create(const Content, AOwner: TWinControl);
@@ -128,10 +128,10 @@ begin
   FFrameCount := 0;
   FFatherGroup := EmptyStr;
   FMainFolderName := EmptyStr;
-  FOrigem := EmptyStr;
-  FTabela := EmptyStr;
-  FSistema := EmptyStr;
-  FIdCadastro := EmptyStr;
+  FIdOrigin := EmptyStr;
+  FTableName := EmptyStr;
+  FSystemName := EmptyStr;
+  FIdGroup := EmptyStr;
 end;
 
 procedure TFileServer.CreateFolder;
@@ -365,7 +365,7 @@ end;
 
 procedure TFileServer.SetIdCadastro(const Value: string);
 begin
-  FIdCadastro := Value;
+  FIdGroup := Value;
 end;
 
 procedure TFileServer.SetMainFolderName(const Value: string);
@@ -375,7 +375,7 @@ end;
 
 procedure TFileServer.SetOrigem(const Value: string);
 begin
-  FOrigem := Value;
+  FIdOrigin := Value;
 end;
 
 procedure TFileServer.SetPathTree(const Value: TLabel);
@@ -391,12 +391,12 @@ end;
 
 procedure TFileServer.SetSistema(const Value: string);
 begin
-  FSistema := Value;
+  FSystemName := Value;
 end;
 
 procedure TFileServer.SetTabela(const Value: string);
 begin
-  FTabela := Value;
+  FTableName := Value;
 end;
 
 procedure TFileServer.ShowWait(const Animate: Boolean);
@@ -408,10 +408,15 @@ end;
 procedure TFileServer.Start;
 begin
   FPreviousImage.Visible := False;
-  if FIdCadastro.Trim.IsEmpty then
-    FController.CreateCadastro(FOrigem, FTabela, FSistema, OnStart)
+  if FIdGroup.Trim.IsEmpty then
+    FController.CreateCadastro(FIdOrigin, FTableName, FSystemName, OnStart)
   else
-    FController.GetCadastro(FIdCadastro, OnStart);
+    FController.GetGroup(IdGroup,
+      procedure(const Response: IResponse)
+      begin
+        if TResponseHandler.New(FOwner).Handle(Response) then
+          FController.GetCadastro(FController.mmtAgrupamentoCOD_CAD_AGR.AsString, OnStart);
+      end);
 end;
 
 end.

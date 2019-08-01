@@ -16,100 +16,100 @@ object FrmServidorArquivos: TFrmServidorArquivos
   PixelsPerInch = 96
   TextHeight = 13
   object lblTable: TLabel
-    Left = 695
+    Left = 24
     Top = 100
-    Width = 32
+    Width = 26
     Height = 13
-    Caption = 'Tabela'
+    Caption = 'Table'
   end
   object lblOrigem: TLabel
     Left = 24
     Top = 54
-    Width = 38
+    Width = 33
     Height = 13
-    Caption = 'Origem'
+    Caption = 'Origin'
   end
   object lblTamanhoMaximo: TLabel
-    Left = 695
-    Top = 8
-    Width = 133
+    Left = 591
+    Top = 204
+    Width = 104
     Height = 13
-    Caption = 'Tamanho M'#225'ximo (em MB)'
+    Caption = 'Max File Size (in MB)'
   end
   object lblCadastro: TLabel
     Left = 24
     Top = 8
-    Width = 46
+    Width = 47
     Height = 13
-    Caption = 'Cadastro'
+    Caption = 'Group ID'
   end
   object lblSistema: TLabel
-    Left = 695
-    Top = 54
-    Width = 39
-    Height = 13
-    Caption = 'Sistema'
-  end
-  object lblPai: TLabel
-    Left = 24
-    Top = 100
-    Width = 89
-    Height = 13
-    Caption = 'Agrupamento Pai'
-  end
-  object Label1: TLabel
     Left = 24
     Top = 146
-    Width = 103
+    Width = 35
     Height = 13
-    Caption = 'Descri'#231#227'o Pasta Raiz'
+    Caption = 'System'
+  end
+  object lblPai: TLabel
+    Left = 182
+    Top = 8
+    Width = 69
+    Height = 13
+    Caption = 'Father Group'
+  end
+  object Label1: TLabel
+    Left = 182
+    Top = 54
+    Width = 94
+    Height = 13
+    Caption = 'Main Folder Name'
   end
   object btnAbrir: TButton
     Left = 24
-    Top = 192
+    Top = 200
     Width = 137
     Height = 25
-    Caption = 'Visualizar'
+    Caption = 'View'
     DoubleBuffered = False
     ParentDoubleBuffered = False
     TabOrder = 5
     OnClick = btnAbrirClick
   end
   object edtTableName: TEdit
-    Left = 695
+    Left = 24
     Top = 119
     Width = 137
     Height = 21
     TabOrder = 4
   end
-  object edtOrigem: TEdit
+  object edtIdOrigin: TEdit
     Left = 24
     Top = 73
     Width = 137
     Height = 21
     TabOrder = 1
   end
-  object edtTamanhoMaximo: TEdit
-    Left = 695
-    Top = 27
+  object edtMaxFileSize: TEdit
+    Left = 591
+    Top = 223
     Width = 137
     Height = 21
     TabOrder = 6
     Text = '1'
   end
-  object GroupBox1: TGroupBox
-    Left = 207
+  object grpFilesType: TGroupBox
+    Left = 591
     Top = 8
     Width = 226
-    Height = 236
-    Caption = 'Tipos de Documentos'
+    Height = 190
+    Caption = 'Files Type (optional)'
     TabOrder = 7
-    object chkImagens: TCheckBox
+    object chkImages: TCheckBox
       Left = 16
       Top = 21
       Width = 200
       Height = 17
-      Caption = 'Imagens'
+      Caption = 'Images'
       TabOrder = 0
     end
     object chkWord: TCheckBox
@@ -136,12 +136,12 @@ object FrmServidorArquivos: TFrmServidorArquivos
       Caption = 'Power Point'
       TabOrder = 3
     end
-    object chkArquivosZipados: TCheckBox
+    object chkZIP: TCheckBox
       Left = 16
       Top = 113
       Width = 200
       Height = 17
-      Caption = 'Arquivos Zipados'
+      Caption = 'ZIP'
       TabOrder = 4
     end
     object chkPDF: TCheckBox
@@ -153,7 +153,7 @@ object FrmServidorArquivos: TFrmServidorArquivos
       TabOrder = 5
     end
   end
-  object edtCadastro: TEdit
+  object edtIdGroup: TEdit
     Left = 24
     Top = 27
     Width = 137
@@ -161,43 +161,43 @@ object FrmServidorArquivos: TFrmServidorArquivos
     TabOrder = 0
   end
   object edtFatherGroup: TEdit
-    Left = 24
-    Top = 119
+    Left = 182
+    Top = 27
     Width = 137
     Height = 21
     TabOrder = 2
   end
-  object edtDescricaoPastaRaiz: TEdit
-    Left = 24
-    Top = 165
+  object edtMainFolderName: TEdit
+    Left = 182
+    Top = 73
     Width = 137
     Height = 21
     TabOrder = 3
   end
-  object GroupBox2: TGroupBox
-    Left = 455
-    Top = 129
+  object grpPermissions: TGroupBox
+    Left = 350
+    Top = 8
     Width = 226
     Height = 115
-    Caption = 'Permiss'#245'es'
+    Caption = 'Permissions (optional)'
     TabOrder = 8
-    object CheckBox1: TCheckBox
+    object chkUpdate: TCheckBox
       Left = 16
       Top = 21
       Width = 200
       Height = 17
-      Caption = 'Alterar'
+      Caption = 'Update'
       TabOrder = 0
     end
-    object CheckBox2: TCheckBox
+    object chkDelete: TCheckBox
       Left = 16
       Top = 44
       Width = 200
       Height = 17
-      Caption = 'Excluir'
+      Caption = 'Delete'
       TabOrder = 1
     end
-    object CheckBox3: TCheckBox
+    object chkDownload: TCheckBox
       Left = 16
       Top = 67
       Width = 200
@@ -205,7 +205,7 @@ object FrmServidorArquivos: TFrmServidorArquivos
       Caption = 'Download'
       TabOrder = 2
     end
-    object CheckBox4: TCheckBox
+    object chkUpload: TCheckBox
       Left = 16
       Top = 90
       Width = 200
@@ -215,29 +215,29 @@ object FrmServidorArquivos: TFrmServidorArquivos
     end
   end
   object GroupBox3: TGroupBox
-    Left = 455
-    Top = 8
+    Left = 350
+    Top = 129
     Width = 226
     Height = 115
-    Caption = 'Permiss'#245'es Agrupamento'
+    Caption = 'Group Permission (optional)'
     TabOrder = 9
-    object CheckBox5: TCheckBox
+    object chkGroupUpdate: TCheckBox
       Left = 16
       Top = 21
       Width = 200
       Height = 17
-      Caption = 'Alterar'
+      Caption = 'Update'
       TabOrder = 0
     end
-    object CheckBox6: TCheckBox
+    object chkGroupDelete: TCheckBox
       Left = 16
       Top = 44
       Width = 200
       Height = 17
-      Caption = 'Excluir'
+      Caption = 'Delete'
       TabOrder = 1
     end
-    object CheckBox7: TCheckBox
+    object chkGroupDownload: TCheckBox
       Left = 16
       Top = 67
       Width = 200
@@ -245,7 +245,7 @@ object FrmServidorArquivos: TFrmServidorArquivos
       Caption = 'Download'
       TabOrder = 2
     end
-    object CheckBox8: TCheckBox
+    object chkGroupUpload: TCheckBox
       Left = 16
       Top = 90
       Width = 200
@@ -254,9 +254,9 @@ object FrmServidorArquivos: TFrmServidorArquivos
       TabOrder = 3
     end
   end
-  object edtSistema: TEdit
-    Left = 695
-    Top = 73
+  object edtSystemName: TEdit
+    Left = 24
+    Top = 165
     Width = 137
     Height = 21
     TabOrder = 10

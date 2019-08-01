@@ -3,7 +3,7 @@ unit FileManager.Controllers.FileControl;
 interface
 
 uses
-  System.SysUtils, System.Classes, FileManager.Providers.Modulos.Base, FileManager.Providers.Frames.FileUpload,
+  System.SysUtils, System.Classes, FileManager.Providers.Controllers.Base, FileManager.Providers.Frames.FileUpload,
   FileManager.Providers.Response.Default, FileManager.Providers.Response.Intf, FileManager.Providers.Aguarde.Impl,
   FileManager.Providers.Request, System.JSON, FileManager.Providers.Constants;
 
