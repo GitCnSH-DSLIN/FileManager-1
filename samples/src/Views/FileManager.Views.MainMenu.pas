@@ -25,7 +25,6 @@ type
     lblCadastro: TLabel;
     edtCadastro: TEdit;
     lblSistema: TLabel;
-    cbxSistema: TComboBox;
     lblPai: TLabel;
     edtFatherGroup: TEdit;
     Label1: TLabel;
@@ -40,6 +39,7 @@ type
     CheckBox6: TCheckBox;
     CheckBox7: TCheckBox;
     CheckBox8: TCheckBox;
+    edtSistema: TEdit;
     procedure btnAbrirClick(Sender: TObject);
   private
 
@@ -63,7 +63,7 @@ begin
     FileManager.MaxFileSize := FileManager.ONE_MB_SIZE * StrToInt64Def(edtTamanhoMaximo.Text, 1);
     FileManager.FileServer.Origem := edtOrigem.Text;
     FileManager.FileServer.Tabela := edtTableName.Text;
-    FileManager.FileServer.Sistema := cbxSistema.Text;
+    FileManager.FileServer.Sistema := edtSistema.Text;
     FileManager.FileServer.FatherGroup := edtFatherGroup.Text;
     FileManager.FileServer.IdCadastro := edtCadastro.Text;
     FileManager.FileServer.MainFolderName := edtDescricaoPastaRaiz.Text;

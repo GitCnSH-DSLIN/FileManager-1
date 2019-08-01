@@ -160,20 +160,6 @@ object FrmServidorArquivos: TFrmServidorArquivos
     Height = 21
     TabOrder = 0
   end
-  object cbxSistema: TComboBox
-    Left = 695
-    Top = 73
-    Width = 137
-    Height = 21
-    Style = csDropDownList
-    ItemIndex = 0
-    TabOrder = 8
-    Text = 'SIA'
-    Items.Strings = (
-      'SIA'
-      'SIP'
-      'SCPI')
-  end
   object edtFatherGroup: TEdit
     Left = 24
     Top = 119
@@ -194,7 +180,7 @@ object FrmServidorArquivos: TFrmServidorArquivos
     Width = 226
     Height = 115
     Caption = 'Permiss'#245'es'
-    TabOrder = 9
+    TabOrder = 8
     object CheckBox1: TCheckBox
       Left = 16
       Top = 21
@@ -234,7 +220,7 @@ object FrmServidorArquivos: TFrmServidorArquivos
     Width = 226
     Height = 115
     Caption = 'Permiss'#245'es Agrupamento'
-    TabOrder = 10
+    TabOrder = 9
     object CheckBox5: TCheckBox
       Left = 16
       Top = 21
@@ -267,5 +253,12 @@ object FrmServidorArquivos: TFrmServidorArquivos
       Caption = 'Upload'
       TabOrder = 3
     end
+  end
+  object edtSistema: TEdit
+    Left = 695
+    Top = 73
+    Width = 137
+    Height = 21
+    TabOrder = 10
   end
 end
