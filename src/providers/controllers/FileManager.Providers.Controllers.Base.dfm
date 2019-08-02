@@ -1,4 +1,4 @@
-object DMBase: TDMBase
+object FileManagerController: TFileManagerController
   OldCreateOrder = False
   OnCreate = DataModuleCreate
   OnDestroy = DataModuleDestroy

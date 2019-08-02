@@ -7,7 +7,7 @@ uses
   FileManager.Providers.Response.Default, FileManager.Providers.Response.Intf, Winapi.Windows, System.Math;
 
 type
-  TDMBase = class(TDataModule)
+  TFileManagerController = class(TDataModule)
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
@@ -29,24 +29,24 @@ implementation
 
 {$R *.dfm}
 
-constructor TDMBase.Create(const ServerURL: string);
+constructor TFileManagerController.Create(const ServerURL: string);
 begin
   inherited Create(nil);
   FFileServerURL := ServerURL;
 end;
 
-procedure TDMBase.DataModuleCreate(Sender: TObject);
+procedure TFileManagerController.DataModuleCreate(Sender: TObject);
 begin
   Request := TRequest.Create(FFileServerURL);
   FTempDirectory := EmptyStr;
 end;
 
-procedure TDMBase.DataModuleDestroy(Sender: TObject);
+procedure TFileManagerController.DataModuleDestroy(Sender: TObject);
 begin
   Request.Free;
 end;
 
-function TDMBase.FormatFileSize(const FileSize: Int64): string;
+function TFileManagerController.FormatFileSize(const FileSize: Int64): string;
 const
   Description: Array [0 .. 8] of string = ('Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
 var
@@ -58,17 +58,17 @@ begin
   Result := FormatFloat('###0.##', FileSize / IntPower(1024, I)) + ' ' + Description[I];
 end;
 
-function TDMBase.GetFileServerURL: string;
+function TFileManagerController.GetFileServerURL: string;
 begin
  Result := FFileServerURL;
 end;
 
-function TDMBase.GetRequest: TRequest;
+function TFileManagerController.GetRequest: TRequest;
 begin
   Result := Request;
 end;
 
-function TDMBase.GetTempDirectory: string;
+function TFileManagerController.GetTempDirectory: string;
 var
   TempFolder: array[0..MAX_PATH] of Char;
 begin

@@ -11,7 +11,7 @@ uses
 
 type
   TResponseCallBack = reference to procedure(const Response: IResponse);
-  TControllerFileManager = class(TDMBase)
+  TControllerFileManager = class(TFileManagerController)
     mmtPastas: TFDMemTable;
     mmtPastasCOD_PAS: TLargeintField;
     mmtPastasCOD_AGR_PAS: TLargeintField;

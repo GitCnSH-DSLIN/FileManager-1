@@ -9,7 +9,7 @@ uses
 
 type
   TUploadCallBack = reference to procedure(const Response: IResponse; const FileItem: TFrameFileUpload);
-  TControllerFileControl = class(TDMBase)
+  TControllerFileControl = class(TFileManagerController)
     procedure DataModuleCreate(Sender: TObject);
   private
     FMaxFileSize: Int64;
