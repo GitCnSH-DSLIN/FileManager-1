@@ -274,5 +274,6 @@ object FrmServidorArquivos: TFrmServidorArquivos
     Width = 295
     Height = 21
     TabOrder = 11
+    Text = 'http://localhost:8080/fiorilli/api/files'
   end
 end
