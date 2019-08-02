@@ -63,7 +63,7 @@ begin
     FileManager.FileServer.TableName := edtTableName.Text;
     FileManager.FileServer.SystemName := edtSystemName.Text;
     FileManager.FileServer.FatherGroup := edtFatherGroup.Text;
-    FileManager.FileServer.IdGroup := edtIdGroup.Text;
+    FileManager.FileServer.MainGroup := edtIdGroup.Text;
     FileManager.FileServer.MainFolderName := edtMainFolderName.Text;
     FileManager.Execute;
   finally
