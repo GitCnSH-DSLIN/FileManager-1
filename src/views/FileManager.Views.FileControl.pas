@@ -54,7 +54,6 @@ type
     procedure btnNovaPastaClick(Sender: TObject);
     procedure imgPreviousFolderClick(Sender: TObject);
     procedure tabUploadFilesShow(Sender: TObject);
-    procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private
     FilesList: TObjectList<TFrameFileUpload>;
@@ -66,6 +65,7 @@ type
   public
     Controller: TControllerFileControl;
     FileServer: TFileServer;
+    constructor Create(const FileServerURL: string); reintroduce;
   end;
 
 implementation
@@ -128,13 +128,14 @@ begin
   FileServer.CreateFolder;
 end;
 
-procedure TFrmFileControl.FormCreate(Sender: TObject);
+constructor TFrmFileControl.Create(const FileServerURL: string);
 begin
+  inherited Create(Application.MainForm);
   FBlockUI := TBlockUI.Create(TWinControl(Self.Owner));
   FDragDropArea := TFrmDragDropArea.Create(pnlDragToUpload, AddFileItem);
   FilesList :=  TObjectList<TFrameFileUpload>.Create;
-  Controller := TControllerFileControl.Create(Self);
-  FileServer := TFileServer.Create(pnlFileList, Self);
+  Controller := TControllerFileControl.Create(FileServerURL);
+  FileServer := TFileServer.Create(pnlFileList, Self, FileServerURL);
   FileServer.PathTree := lblCurrentPath;
   FileServer.PreviousImage := imgPreviousFolder;
   FRefreshFolder := False;

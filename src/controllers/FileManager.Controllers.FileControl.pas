@@ -31,7 +31,7 @@ var
   Request: TRequest;
 begin
   Result := 0;
-  Request := TRequest.Create(URL_SERVIDOR_ARQUIVOS);
+  Request := TRequest.Create(GetFileServerURL);
   try
     Request.Clear.SetResource('Arquivo').AddBody(FileData).Post(Response);
   finally
@@ -75,7 +75,7 @@ begin
         IdAnexo := CreateArquivo(FileItem.GetFileData, Response).ToString;
         if not Response.Success then
           Exit;
-        Request := TRequest.Create(URL_SERVIDOR_ARQUIVOS);
+        Request := TRequest.Create(GetFileServerURL);
         Anexo := TMemoryStream.Create;
         try
           Anexo.LoadFromFile(FileItem.GetFileData.GetValue<string>('CAMINHO_ARQ'));

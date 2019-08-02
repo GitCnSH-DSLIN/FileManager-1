@@ -13,7 +13,6 @@ object FrmFileControl: TFrmFileControl
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
-  OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
   PixelsPerInch = 96
@@ -42,10 +41,6 @@ object FrmFileControl: TFrmFileControl
       Font.Style = []
       ParentFont = False
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object lblCurrentPath: TLabel
         AlignWithMargins = True
         Left = 10
@@ -1824,10 +1819,6 @@ object FrmFileControl: TFrmFileControl
       ImageIndex = 1
       TabVisible = False
       OnShow = tabUploadFilesShow
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object pnlHeaderUpload: TPanel
         Left = 0
         Top = 0

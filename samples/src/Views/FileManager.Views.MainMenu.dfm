@@ -57,16 +57,23 @@ object FrmServidorArquivos: TFrmServidorArquivos
     Height = 13
     Caption = 'Father Group'
   end
-  object Label1: TLabel
+  object lblMainFolderName: TLabel
     Left = 182
     Top = 54
     Width = 94
     Height = 13
     Caption = 'Main Folder Name'
   end
+  object lblServerURL: TLabel
+    Left = 24
+    Top = 192
+    Width = 54
+    Height = 13
+    Caption = 'Server URL'
+  end
   object btnAbrir: TButton
     Left = 24
-    Top = 200
+    Top = 256
     Width = 137
     Height = 25
     Caption = 'View'
@@ -214,7 +221,7 @@ object FrmServidorArquivos: TFrmServidorArquivos
       TabOrder = 3
     end
   end
-  object GroupBox3: TGroupBox
+  object grpGroupPermissions: TGroupBox
     Left = 350
     Top = 129
     Width = 226
@@ -260,5 +267,12 @@ object FrmServidorArquivos: TFrmServidorArquivos
     Width = 137
     Height = 21
     TabOrder = 10
+  end
+  object edtServerURL: TEdit
+    Left = 24
+    Top = 211
+    Width = 295
+    Height = 21
+    TabOrder = 11
   end
 end

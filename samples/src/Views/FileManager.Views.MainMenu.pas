@@ -27,19 +27,21 @@ type
     lblSistema: TLabel;
     lblPai: TLabel;
     edtFatherGroup: TEdit;
-    Label1: TLabel;
+    lblMainFolderName: TLabel;
     edtMainFolderName: TEdit;
     grpPermissions: TGroupBox;
     chkUpdate: TCheckBox;
     chkDelete: TCheckBox;
     chkDownload: TCheckBox;
     chkUpload: TCheckBox;
-    GroupBox3: TGroupBox;
+    grpGroupPermissions: TGroupBox;
     chkGroupUpdate: TCheckBox;
     chkGroupDelete: TCheckBox;
     chkGroupDownload: TCheckBox;
     chkGroupUpload: TCheckBox;
     edtSystemName: TEdit;
+    edtServerURL: TEdit;
+    lblServerURL: TLabel;
     procedure btnAbrirClick(Sender: TObject);
   end;
 
@@ -54,7 +56,7 @@ procedure TFrmServidorArquivos.btnAbrirClick(Sender: TObject);
 var
   FileManager: TFileManager;
 begin
-  FileManager := TFileManager.Create;
+  FileManager := TFileManager.Create(edtServerURL.Text);
   try
     FileManager.MaxFileSize := FileManager.ONE_MB_SIZE * StrToInt64Def(edtMaxFileSize.Text, 1);
     FileManager.FileServer.IdOrigin := edtIdOrigin.Text;

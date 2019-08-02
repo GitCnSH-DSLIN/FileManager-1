@@ -12,7 +12,7 @@ type
   public
     const ONE_MB_SIZE = 1048577;
     property MaxFileSize: Int64 write SetMaxFileSize;
-    constructor Create;
+    constructor Create(const FileServerURL: string);
     function FileServer: TFileServer;
     procedure Execute;
     destructor Destroy; override;
@@ -22,9 +22,9 @@ implementation
 
 { TFileServer }
 
-constructor TFileManager.Create;
+constructor TFileManager.Create(const FileServerURL: string);
 begin
-  FFileControl := TFrmFileControl.Create(Application.MainForm);
+  FFileControl := TFrmFileControl.Create(FileServerURL);
   DMImagens := TDMImagens.Create(Application.MainForm);
 end;
 

@@ -3,7 +3,6 @@ unit FileManager.Providers.Constants;
 interface
 
 const
-  URL_SERVIDOR_ARQUIVOS = 'http://localhost:8080/fiorilli/api/files';
   REQUEST_ERROR_MESSAGE = 'Não foi possível processar a requisição!';
 
 type

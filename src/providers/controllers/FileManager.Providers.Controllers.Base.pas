@@ -13,10 +13,14 @@ type
   private
     Request: TRequest;
     FTempDirectory: string;
+    FFileServerURL: string;
   protected
     function GetRequest: TRequest;
+    function GetFileServerURL: string;
     function GetTempDirectory: string;
     function FormatFileSize(const FileSize: Int64): string;
+  public
+    constructor Create(const ServerURL: string); reintroduce;
   end;
 
 implementation
@@ -25,9 +29,15 @@ implementation
 
 {$R *.dfm}
 
+constructor TDMBase.Create(const ServerURL: string);
+begin
+  inherited Create(nil);
+  FFileServerURL := ServerURL;
+end;
+
 procedure TDMBase.DataModuleCreate(Sender: TObject);
 begin
-  Request := TRequest.Create(URL_SERVIDOR_ARQUIVOS);
+  Request := TRequest.Create(FFileServerURL);
   FTempDirectory := EmptyStr;
 end;
 
@@ -46,6 +56,11 @@ begin
   while FileSize > Power(1024, I + 1) do
     Inc(I);
   Result := FormatFloat('###0.##', FileSize / IntPower(1024, I)) + ' ' + Description[I];
+end;
+
+function TDMBase.GetFileServerURL: string;
+begin
+ Result := FFileServerURL;
 end;
 
 function TDMBase.GetRequest: TRequest;

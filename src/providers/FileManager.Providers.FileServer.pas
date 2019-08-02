@@ -56,7 +56,7 @@ type
     property IdGroup: string read FIdGroup write SetIdCadastro;
     property PathTree: TLabel read FPathTree write SetPathTree;
     property PreviousImage: TImage read FPreviousImage write SetPreviousImage;
-    constructor Create(const Content, AOwner: TWinControl);
+    constructor Create(const Content, AOwner: TWinControl; const FileServerURL: string);
     procedure Start;
     procedure CreateFolder;
     procedure PreviousFolder;
@@ -112,10 +112,10 @@ begin
       FContent.Controls[I].Destroy;
 end;
 
-constructor TFileServer.Create(const Content, AOwner: TWinControl);
+constructor TFileServer.Create(const Content, AOwner: TWinControl; const FileServerURL: string);
 begin
   inherited Create;
-  FController := TControllerFileManager.Create(AOwner);
+  FController := TControllerFileManager.Create(FileServerURL);
   FPathControl := TPathControl.Create;
   FWait := TActivityIndicator.Create(AOwner);
   FWait.Parent := Content;
