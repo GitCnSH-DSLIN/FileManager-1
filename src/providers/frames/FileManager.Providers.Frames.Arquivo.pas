@@ -39,6 +39,7 @@ type
     OnDeleteFile: TDeleteFile;
     constructor Create(const AOwner: TComponent); reintroduce;
     procedure LoadFileData(const FileData: TJSONObject);
+    destructor Destroy; override;
   end;
 
 implementation
@@ -53,6 +54,13 @@ begin
   if (AOwner is TWinControl) then
     Self.Parent := TWinControl(AOwner);
   Self.Align := TAlign.alTop;
+end;
+
+destructor TFrameArquivo.Destroy;
+begin
+  if Assigned(FFileData) then
+    FFileData.Free;
+  inherited;
 end;
 
 procedure TFrameArquivo.EnableOptions(const Enabled: Boolean);
@@ -122,7 +130,7 @@ begin
   lblFileName.Caption := FFileData.GetValue<string>('DESCRICAO_ARQ');
   lblFileSize.Caption := FormatFileSize(FFileData.GetValue<Int64>('TAMANHO_ARQ'));
   lblDataInclusao.Caption := FormatDateTime('dd/mm/yyyy', FFileData.GetValue<TDateTime>('DTA_INC_ARQ'));
-  imgFileKind.Picture := DMImagens.cxImageCollection.Items.Items[StrToTipoDocumento(ExtractFileExt(FFileData.GetValue<string>('CAMINHO_ARQ'))).GetImageIndex].Picture;
+  imgFileKind.Picture := DMImagens.cxImageCollection.Items.Items[StrToTipoDocumento(ExtractFileExt(FFileData.GetValue<string>('NOME_ARQ'))).GetImageIndex].Picture;
 end;
 
 end.

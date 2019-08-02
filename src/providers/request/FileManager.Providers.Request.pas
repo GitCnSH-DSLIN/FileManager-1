@@ -18,7 +18,7 @@ type
   public
     constructor Create(const ABaseURL: string = '');
     function AddBody(const AContent: string): TRequest; overload;
-    function AddBody(const AContent: TJSONObject): TRequest; overload;
+    function AddBody(const AContent: TJSONObject; const AOwns: Boolean = True): TRequest; overload;
     function AddFile(const AName: string; const AContent: TStream): TRequest;
     function AddParam(const AName, AValue: string): TRequest; overload;
     function AddURLParam(const AName, AValue: string): TRequest; overload;
@@ -62,11 +62,15 @@ begin
     FRESTRequest.Body.Add(AContent, ctAPPLICATION_JSON);
 end;
 
-function TRequest.AddBody(const AContent: TJSONObject): TRequest;
+function TRequest.AddBody(const AContent: TJSONObject; const AOwns: Boolean): TRequest;
 begin
   Result := Self;
   if Assigned(AContent) then
+  begin
     FRESTRequest.Body.Add(AContent);
+    if AOwns then
+      AContent.Free;
+  end;
 end;
 
 function TRequest.AddFile(const AName: string; const AContent: TStream): TRequest;

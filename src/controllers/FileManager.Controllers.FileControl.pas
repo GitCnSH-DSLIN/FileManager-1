@@ -33,7 +33,7 @@ begin
   Result := 0;
   Request := TRequest.Create(GetFileServerURL);
   try
-    Request.Clear.SetResource('Arquivo').AddBody(FileData).Post(Response);
+    Request.Clear.SetResource('Arquivo').AddBody(FileData, False).Post(Response);
   finally
     if Request.ProcessResponse(Response) then
       Result := Request.Response.JSONValue.GetValue<Integer>('COD_ARQ');
@@ -78,7 +78,7 @@ begin
         Request := TRequest.Create(GetFileServerURL);
         Anexo := TMemoryStream.Create;
         try
-          Anexo.LoadFromFile(FileItem.GetFileData.GetValue<string>('CAMINHO_ARQ'));
+          Anexo.LoadFromFile(FileItem.GetFilePath);
           Request.Clear.SetResource('Arquivo/{Id}/Upload').AddURLParam('Id', IdAnexo).AddFile('Anexo', Anexo).Post(Response);
         finally
           if not Request.ProcessResponse(Response) then

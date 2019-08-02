@@ -39,6 +39,7 @@ type
     procedure LoadFolderData(const FolderData: TJSONObject);
     function GetIdFolder: string;
     function GetIdGroupFolder: string;
+    destructor Destroy; override;
   end;
 
 implementation
@@ -54,6 +55,13 @@ begin
     Self.Parent := TWinControl(AOwner);
   Self.Align := TAlign.alTop;
   OnOpenFolder := OnOpenFolder;
+end;
+
+destructor TFramePasta.Destroy;
+begin
+  if Assigned(FFolderData) then
+    FFolderData.Free;
+  inherited;
 end;
 
 procedure TFramePasta.EnableOptions(const Enabled: Boolean);

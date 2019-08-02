@@ -25,11 +25,13 @@ type
     procedure imgEditClick(Sender: TObject);
   private
     FFileData: TJSONObject;
+    FFilePath: string;
     procedure ShowActivityIndicator(const Animate: Boolean);
   public
     ObserverFile: IObserverFile;
     procedure LoadFileData(const FilePath, IdFolder: string);
     function GetFileData: TJSONObject;
+    function GetFilePath: string;
     procedure StartUpload;
     procedure EndUpload(const Send: Boolean);
     constructor Create(AOwner: TComponent); override;
@@ -54,7 +56,8 @@ end;
 
 destructor TFrameFileUpload.Destroy;
 begin
-  FFileData.Free;
+  if Assigned(FFileData) then
+    FFileData.Free;
   inherited;
 end;
 
@@ -81,6 +84,11 @@ begin
   Result := FFileData;
 end;
 
+function TFrameFileUpload.GetFilePath: string;
+begin
+  Result := FFilePath;
+end;
+
 procedure TFrameFileUpload.imgEditClick(Sender: TObject);
 var
   Descricao: string;
@@ -104,11 +112,11 @@ begin
   lblFileName.Caption := ExtractFileName(FilePath);
   lblFileSize.Caption := FormatFileSize(GetFileSize(FilePath));
   imgFileKind.Picture := DMImagens.cxImageCollection.Items.Items[StrToTipoDocumento(ExtractFileExt(FilePath)).GetImageIndex].Picture;
+  FFilePath := FilePath;
   TThread.CreateAnonymousThread(
     procedure
     begin
       FFileData.AddPair('CONTENT_TYPE_ARQ', GetFileMIMEType(FilePath));
-      FFileData.AddPair('CAMINHO_ARQ', FilePath);
       FFileData.AddPair('NOME_ARQ', ExtractFileName(FilePath));
       FFileData.AddPair('DESCRICAO_ARQ', ExtractFileName(FilePath));
       FFileData.AddPair('TAMANHO_ARQ', TJSONNumber.Create(GetFileSize(FilePath)));

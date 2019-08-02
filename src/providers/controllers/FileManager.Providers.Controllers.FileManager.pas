@@ -204,6 +204,7 @@ begin
       begin
         for I := 0 to Pred(TempFiles.Count) do
           DeleteFile(PChar(TempFiles.Strings[I]));
+        TempFiles.Free;
       end).Start;
 end;
 
