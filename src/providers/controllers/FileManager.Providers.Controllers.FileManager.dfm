@@ -1,5 +1,6 @@
 inherited ControllerFileManager: TControllerFileManager
   OldCreateOrder = True
+  OnDestroy = DataModuleDestroy
   Height = 106
   Width = 412
   object mmtPastas: TFDMemTable

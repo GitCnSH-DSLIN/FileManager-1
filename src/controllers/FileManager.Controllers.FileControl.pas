@@ -5,10 +5,9 @@ interface
 uses
   System.SysUtils, System.Classes, FileManager.Providers.Controllers.Base, FileManager.Providers.Frames.FileUpload,
   FileManager.Providers.Response.Default, FileManager.Providers.Response.Intf, FileManager.Providers.Aguarde.Impl,
-  FileManager.Providers.Request, System.JSON, FileManager.Providers.Constants, REST.Types;
+  FileManager.Providers.Request, System.JSON, FileManager.Providers.Constants, REST.Types, Providers.Types.CallBack;
 
 type
-  TUploadCallBack = reference to procedure(const Response: IResponse; const FileItem: TFrameFileUpload);
   TControllerFileControl = class(TFileManagerController)
     procedure DataModuleCreate(Sender: TObject);
   private

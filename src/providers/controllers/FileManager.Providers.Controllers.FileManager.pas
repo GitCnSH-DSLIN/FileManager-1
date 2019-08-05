@@ -7,10 +7,9 @@ uses
   FileManager.Providers.Aguarde.Impl, REST.Types,FileManager. Providers.Response.Default, FileManager.Providers.Response.Intf,
   FireDAC.Stan.Intf, System.JSON, FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
   FireDAC.DApt.Intf, Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, DataSet.Serialize.Helper, FileManager.Providers.Constants,
-  FileManager.Providers.Request, IdHTTP, Winapi.ShellAPI, Winapi.Windows, Vcl.Forms;
+  FileManager.Providers.Request, IdHTTP, Winapi.ShellAPI, Winapi.Windows, Vcl.Forms, Providers.Types.CallBack;
 
 type
-  TResponseCallBack = reference to procedure(const Response: IResponse);
   TControllerFileManager = class(TFileManagerController)
     mmtPastas: TFDMemTable;
     mmtPastasCOD_PAS: TLargeintField;
@@ -195,7 +194,6 @@ end;
 
 procedure TControllerFileManager.DataModuleDestroy(Sender: TObject);
 begin
-  inherited;
   if Assigned(TempFiles) then
     TThread.CreateAnonymousThread(
       procedure
@@ -206,6 +204,7 @@ begin
           DeleteFile(PChar(TempFiles.Strings[I]));
         TempFiles.Free;
       end).Start;
+  inherited;
 end;
 
 procedure TControllerFileManager.DeleteFiles(const IdFile: string; const CallBack: TResponseCallBack);
@@ -463,6 +462,7 @@ begin
         Anexo := TMemoryStream.Create;
         try
           try
+            Request.Request.CustomHeaders.Values['Authorization'] := GetToken;
             Request.Get(GetServerURL + '/Arquivo/' + mmtArquivosCOD_ARQ.AsString + '/Download', Anexo);
             FilePath := GetTempDirectory + mmtArquivosNOME_ARQ.AsString;
             Anexo.SaveToFile(FilePath);

@@ -16,7 +16,6 @@ type
     FOwner: TWinControl;
     FFrameCount: Integer;
     FPathControl: TPathControl;
-    FWait: TActivityIndicator;
     FMainGroup: string;
     FTableName: string;
     FSystemName: string;
@@ -38,7 +37,6 @@ type
     procedure LoadGroup;
     procedure LoadFolders(const DataSet: TDataSet);
     procedure LoadFiles(const DataSet: TDataSet);
-    procedure ShowWait(const Animate: Boolean);
     procedure SetFatherGroup(const Value: string);
     procedure SetIdCadastro(const Value: string);
     procedure SetMainFolderName(const Value: string);
@@ -75,16 +73,11 @@ procedure TFileServer.PreviousFolder;
 begin
   if not FPathControl.PreviousGroup.Trim.IsEmpty then
   begin
-    ShowWait(True);
     Controller.GetGroup(FPathControl.PreviousGroup,
       procedure(const Response: IResponse)
       begin
         if not TResponseHandler.New(FOwner).Handle(Response) then
-        begin
-          ShowWait(False);
           Exit;
-        end;
-
         Controller.GetFolders(
           procedure(const Response: IResponse)
           begin
@@ -98,7 +91,6 @@ begin
               FPathControl.PreviousGroup := Controller.mmtAgrupamentoCOD_AGR_AGR.AsString;
               LoadGroup;
             end;
-            ShowWait(False);
           end);
       end);
   end;
@@ -109,8 +101,7 @@ var
   I: Integer;
 begin
   for I := Pred(FContent.ControlCount) downto 0 do
-    if not (FContent.Controls[I] = FWait) then
-      FContent.Controls[I].Destroy;
+    FContent.Controls[I].Destroy;
 end;
 
 constructor TFileServer.Create(const Content, AOwner: TWinControl);
@@ -118,12 +109,6 @@ begin
   inherited Create;
   Controller := TControllerFileManager.Create(AOwner);
   FPathControl := TPathControl.Create;
-  FWait := TActivityIndicator.Create(AOwner);
-  FWait.Parent := Content;
-  FWait.IndicatorSize := TActivityIndicatorSize.aisXLarge;
-  FWait.Left := (Content.Width - FWait.Width) div 2;
-  FWait.Top := (Content.Height - FWait.Height) div 2;
-  ShowWait(False);
   FContent := Content;
   FOwner := AOwner;
   FFrameCount := 0;
@@ -143,23 +128,16 @@ begin
     Exit;
   if Descricao.Trim.IsEmpty then
     Exit;
-  ShowWait(True);
   Controller.CreateGroup(FPathControl.CurrentGroup,
     procedure(const Response: IResponse)
     begin
-      if not (TResponseHandler.New(FOwner).Handle(Response)) then
-      begin
-        ShowWait(False);
-        Exit;
-      end;
-
-      Controller.CreateFolder(Descricao,
-        procedure(const Response: IResponse)
-        begin
-          if (TResponseHandler.New(FOwner).Handle(Response)) then
-            Self.LoadFolders(Controller.mmtPastas);
-          ShowWait(False);
-        end);
+      if (TResponseHandler.New(FOwner).Handle(Response)) then
+        Controller.CreateFolder(Descricao,
+          procedure(const Response: IResponse)
+          begin
+            if (TResponseHandler.New(FOwner).Handle(Response)) then
+              Self.LoadFolders(Controller.mmtPastas);
+          end);
     end);
 end;
 
@@ -188,7 +166,6 @@ destructor TFileServer.Destroy;
 begin
   Controller.Free;
   FPathControl.Free;
-  FWait.Free;
   inherited;
 end;
 
@@ -207,15 +184,11 @@ procedure TFileServer.OnStart(const Response: IResponse);
 begin
   if TResponseHandler.New(FOwner).Handle(Response) then
   begin
-    ShowWait(True);
     Controller.GetAgrupamentoByCadastro(
       procedure(const Response: IResponse)
       begin
-        if not TResponseHandler.New(FOwner).Handle(Response) then
-        begin
-          ShowWait(False);
+        if not (TResponseHandler.New(FOwner).Handle(Response)) then
           Exit;
-        end;
 
         if FMainGroup.Trim.IsEmpty then
           FMainGroup := Controller.mmtAgrupamentoCOD_AGR.AsString;
@@ -242,7 +215,6 @@ begin
 
             if TResponseHandler.New(FOwner).Handle(Response)  then
               OpenFolder(Controller.mmtAgrupamentoCOD_AGR.AsString, Controller.mmtPastasCOD_PAS.AsString, 'Arquivos');
-            ShowWait(False);
           end);
       end);
   end;
@@ -289,16 +261,11 @@ end;
 procedure TFileServer.LoadGroup;
 begin
   FPreviousImage.Visible := not(FPathControl.PreviousGroup.Trim.IsEmpty);
-  ShowWait(True);
   Controller.GetSubFolders(FPathControl.CurrentGroup,
     procedure(const Response: IResponse)
     begin
       if not (TResponseHandler.New(FOwner).Handle(Response)) then
-      begin
-        ShowWait(False);
         Exit;
-      end;
-
       Self.LoadFolders(Controller.mmtPastas);
       Controller.GetFiles(FPathControl.CurrentFolder,
         procedure(const Response: IResponse)
@@ -306,7 +273,6 @@ begin
           if (TResponseHandler.New(FOwner).Handle(Response)) then
             Self.LoadFiles(Controller.mmtArquivos);
           ShowFolderData;
-          ShowWait(False);
         end);
     end);
 end;
@@ -414,12 +380,6 @@ begin
   for I := 0 to Pred(FContent.ControlCount) do
     if (FContent.Controls[I] is TFrameBase) then
       TFrameBase(FContent.Controls[I]).Show;
-end;
-
-procedure TFileServer.ShowWait(const Animate: Boolean);
-begin
-  FWait.Animate := Animate;
-  FWait.Visible := Animate;
 end;
 
 procedure TFileServer.Start;

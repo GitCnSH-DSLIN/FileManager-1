@@ -288,7 +288,7 @@ object FrmServidorArquivos: TFrmServidorArquivos
     Width = 145
     Height = 21
     TabOrder = 11
-    Text = 'http://localhost:8080/fiorilli/api/files'
+    Text = 'http://localhost:8097/fiorilli/api/files'
   end
   object btnClear: TButton
     Left = 175

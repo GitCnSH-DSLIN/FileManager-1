@@ -2,10 +2,13 @@ unit Providers.Types.CallBack;
 
 interface
 
-uses System.JSON, FileManager.Providers.Frames.Base;
+uses System.JSON, FileManager.Providers.Frames.Base, FileManager.Providers.Response.Intf, FileManager.Providers.Frames.FileUpload;
 
 type
   TBooleanCallBack = reference to procedure(const Response: Boolean);
+  TResponseCallBack = reference to procedure(const Response: IResponse);
+
+  TUploadCallBack = reference to procedure(const Response: IResponse; const FileItem: TFrameFileUpload);
 
   TOpenFolder = reference to procedure(const IdGroup, IdFolder, FolderName: string);
   TEditFolder = reference to procedure(const FolderData: TJSONObject; const CallBack: TBooleanCallBack);
