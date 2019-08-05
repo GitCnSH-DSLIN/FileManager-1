@@ -15,7 +15,6 @@ type
     FContent: TWinControl;
     FOwner: TWinControl;
     FFrameCount: Integer;
-    FController: TControllerFileManager;
     FPathControl: TPathControl;
     FWait: TActivityIndicator;
     FMainGroup: string;
@@ -48,6 +47,7 @@ type
     procedure SetPathTree(const Value: TLabel);
     procedure SetPreviousImage(const Value: TImage);
   public
+    Controller: TControllerFileManager;
     property FatherGroup: string read FFatherGroup write SetFatherGroup;
     property MainFolderName: string read FMainFolderName write SetMainFolderName;
     property IdOrigin: string read FIdOrigin write SetOrigem;
@@ -56,7 +56,7 @@ type
     property MainGroup: string read FMainGroup write SetIdCadastro;
     property PathTree: TLabel read FPathTree write SetPathTree;
     property PreviousImage: TImage read FPreviousImage write SetPreviousImage;
-    constructor Create(const Content, AOwner: TWinControl; const FileServerURL: string);
+    constructor Create(const Content, AOwner: TWinControl);
     procedure Start;
     procedure CreateFolder;
     procedure PreviousFolder;
@@ -75,7 +75,7 @@ begin
   if not FPathControl.PreviousGroup.Trim.IsEmpty then
   begin
     ShowWait(True);
-    FController.GetGroup(FPathControl.PreviousGroup,
+    Controller.GetGroup(FPathControl.PreviousGroup,
       procedure(const Response: IResponse)
       begin
         if not TResponseHandler.New(FOwner).Handle(Response) then
@@ -84,17 +84,17 @@ begin
           Exit;
         end;
 
-        FController.GetFolders(
+        Controller.GetFolders(
           procedure(const Response: IResponse)
           begin
             if TResponseHandler.New(FOwner).Handle(Response) then
             begin
               Self.Clear;
               FPathTree.Caption :=  StringReplace(FPathTree.Caption, ' > ' +FPathControl.CurrentFolderName, EmptyStr, [rfIgnoreCase]);
-              FPathControl.CurrentGroup := FController.mmtAgrupamentoCOD_AGR.AsString;
-              FPathControl.CurrentFolder := FController.mmtPastasCOD_PAS.AsString;
-              FPathControl.CurrentFolderName := FController.mmtPastasDESCR_PAS.AsString;
-              FPathControl.PreviousGroup := FController.mmtAgrupamentoCOD_AGR_AGR.AsString;
+              FPathControl.CurrentGroup := Controller.mmtAgrupamentoCOD_AGR.AsString;
+              FPathControl.CurrentFolder := Controller.mmtPastasCOD_PAS.AsString;
+              FPathControl.CurrentFolderName := Controller.mmtPastasDESCR_PAS.AsString;
+              FPathControl.PreviousGroup := Controller.mmtAgrupamentoCOD_AGR_AGR.AsString;
               LoadGroup;
             end;
             ShowWait(False);
@@ -112,10 +112,10 @@ begin
       FContent.Controls[I].Destroy;
 end;
 
-constructor TFileServer.Create(const Content, AOwner: TWinControl; const FileServerURL: string);
+constructor TFileServer.Create(const Content, AOwner: TWinControl);
 begin
   inherited Create;
-  FController := TControllerFileManager.Create(FileServerURL);
+  Controller := TControllerFileManager.Create(AOwner);
   FPathControl := TPathControl.Create;
   FWait := TActivityIndicator.Create(AOwner);
   FWait.Parent := Content;
@@ -143,7 +143,7 @@ begin
   if Descricao.Trim.IsEmpty then
     Exit;
   ShowWait(True);
-  FController.CreateGroup(FPathControl.CurrentGroup,
+  Controller.CreateGroup(FPathControl.CurrentGroup,
     procedure(const Response: IResponse)
     begin
       if not (TResponseHandler.New(FOwner).Handle(Response)) then
@@ -152,11 +152,11 @@ begin
         Exit;
       end;
 
-      FController.CreateFolder(Descricao,
+      Controller.CreateFolder(Descricao,
         procedure(const Response: IResponse)
         begin
           if (TResponseHandler.New(FOwner).Handle(Response)) then
-            Self.LoadFolders(FController.mmtPastas);
+            Self.LoadFolders(Controller.mmtPastas);
           ShowWait(False);
         end);
     end);
@@ -164,7 +164,7 @@ end;
 
 procedure TFileServer.DeleteFile(const IdFile: string; const FrameFile: TFrameBase);
 begin
-  FController.DeleteFiles(IdFile,
+  Controller.DeleteFiles(IdFile,
     procedure(const Response: IResponse)
     begin
       if (TResponseHandler.New(FOwner).Handle(Response)) then
@@ -175,7 +175,7 @@ end;
 procedure TFileServer.DeleteGroup(const IdGroup: string; const FrameFolder: TFrameBase);
 begin
   if TDialogs.Confirm('Deseja realmente excluir essa pasta?' + sLineBreak + sLineBreak + 'Ao excluir todos os arquivos contidos nela serão excluídos também!') then
-    FController.DeleteGroup(IdGroup,
+    Controller.DeleteGroup(IdGroup,
       procedure(const Response: IResponse)
       begin
         if (TResponseHandler.New(FOwner).Handle(Response)) then
@@ -185,7 +185,7 @@ end;
 
 destructor TFileServer.Destroy;
 begin
-  FController.Free;
+  Controller.Free;
   FPathControl.Free;
   FWait.Free;
   inherited;
@@ -207,7 +207,7 @@ begin
   if TResponseHandler.New(FOwner).Handle(Response) then
   begin
     ShowWait(True);
-    FController.GetAgrupamentoByCadastro(
+    Controller.GetAgrupamentoByCadastro(
       procedure(const Response: IResponse)
       begin
         if not TResponseHandler.New(FOwner).Handle(Response) then
@@ -217,30 +217,30 @@ begin
         end;
 
         if FMainGroup.Trim.IsEmpty then
-          FMainGroup := FController.mmtAgrupamentoCOD_AGR.AsString;
+          FMainGroup := Controller.mmtAgrupamentoCOD_AGR.AsString;
 
-        if not(FFatherGroup.Trim.IsEmpty) and not(FController.mmtAgrupamentoCOD_AGR_AGR.AsString.Equals(FFatherGroup)) then
+        if not(FFatherGroup.Trim.IsEmpty) and not(Controller.mmtAgrupamentoCOD_AGR_AGR.AsString.Equals(FFatherGroup)) then
         begin
-          FController.mmtAgrupamento.Edit;
-          FController.mmtAgrupamentoCOD_AGR_AGR.AsString := FFatherGroup;
-          FController.mmtAgrupamento.Post;
-          EditGroup(FController.mmtAgrupamento.ToJSONObject);
+          Controller.mmtAgrupamento.Edit;
+          Controller.mmtAgrupamentoCOD_AGR_AGR.AsString := FFatherGroup;
+          Controller.mmtAgrupamento.Post;
+          EditGroup(Controller.mmtAgrupamento.ToJSONObject);
         end;
 
-        FController.GetFolders(
+        Controller.GetFolders(
           procedure(const Response: IResponse)
           begin
-            if FController.mmtAgrupamentoRAIZ_AGR.AsString.Equals('S') then
-              if not(FMainFolderName.Trim.IsEmpty) and not(FController.mmtPastasDESCR_PAS.AsString.Equals(FMainFolderName)) then
+            if Controller.mmtAgrupamentoRAIZ_AGR.AsString.Equals('S') then
+              if not(FMainFolderName.Trim.IsEmpty) and not(Controller.mmtPastasDESCR_PAS.AsString.Equals(FMainFolderName)) then
               begin
-                FController.mmtPastas.Edit;
-                FController.mmtPastasDESCR_PAS.AsString := FMainFolderName;
-                FController.mmtPastas.Post;
-                EditFolder(FController.mmtPastas.ToJSONObject);
+                Controller.mmtPastas.Edit;
+                Controller.mmtPastasDESCR_PAS.AsString := FMainFolderName;
+                Controller.mmtPastas.Post;
+                EditFolder(Controller.mmtPastas.ToJSONObject);
               end;
 
             if TResponseHandler.New(FOwner).Handle(Response)  then
-              OpenFolder(FController.mmtAgrupamentoCOD_AGR.AsString, FController.mmtPastasCOD_PAS.AsString, 'Arquivos');
+              OpenFolder(Controller.mmtAgrupamentoCOD_AGR.AsString, Controller.mmtPastasCOD_PAS.AsString, 'Arquivos');
             ShowWait(False);
           end);
       end);
@@ -289,7 +289,7 @@ procedure TFileServer.LoadGroup;
 begin
   FPreviousImage.Visible := not(FPathControl.PreviousGroup.Trim.IsEmpty);
   ShowWait(True);
-  FController.GetSubFolders(FPathControl.CurrentGroup,
+  Controller.GetSubFolders(FPathControl.CurrentGroup,
     procedure(const Response: IResponse)
     begin
       if not (TResponseHandler.New(FOwner).Handle(Response)) then
@@ -298,12 +298,12 @@ begin
         Exit;
       end;
 
-      Self.LoadFolders(FController.mmtPastas);
-      FController.GetFiles(FPathControl.CurrentFolder,
+      Self.LoadFolders(Controller.mmtPastas);
+      Controller.GetFiles(FPathControl.CurrentFolder,
         procedure(const Response: IResponse)
         begin
           if (TResponseHandler.New(FOwner).Handle(Response)) then
-            Self.LoadFiles(FController.mmtArquivos);
+            Self.LoadFiles(Controller.mmtArquivos);
           ShowWait(False);
         end);
     end);
@@ -311,7 +311,7 @@ end;
 
 procedure TFileServer.DownloadFile(const IdFile: string);
 begin
-  FController.DownloadFile(IdFile,
+  Controller.DownloadFile(IdFile,
     procedure(const Response: IResponse)
     begin
       TResponseHandler.New(FOwner).Handle(Response);
@@ -320,7 +320,7 @@ end;
 
 procedure TFileServer.EditFile(const FileData: TJSONObject);
 begin
-  FController.EditFile(FileData,
+  Controller.EditFile(FileData,
     procedure(const Response: IResponse)
     begin
       TResponseHandler.New(FOwner).Handle(Response);
@@ -329,7 +329,7 @@ end;
 
 procedure TFileServer.EditFolder(const FolderData: TJSONObject);
 begin
-  FController.EditFolder(FolderData,
+  Controller.EditFolder(FolderData,
     procedure(const Response: IResponse)
     begin
       TResponseHandler.New(FOwner).Handle(Response);
@@ -338,7 +338,7 @@ end;
 
 procedure TFileServer.EditGroup(const GroupData: TJSONObject);
 begin
-  FController.EditGroup(GroupData,
+  Controller.EditGroup(GroupData,
     procedure(const Response: IResponse)
     begin
       TResponseHandler.New(FOwner).Handle(Response);
@@ -412,13 +412,13 @@ procedure TFileServer.Start;
 begin
   FPreviousImage.Visible := False;
   if FMainGroup.Trim.IsEmpty then
-    FController.CreateCadastro(FIdOrigin, FTableName, FSystemName, OnStart)
+    Controller.CreateCadastro(FIdOrigin, FTableName, FSystemName, OnStart)
   else
-    FController.GetGroup(FMainGroup,
+    Controller.GetGroup(FMainGroup,
       procedure(const Response: IResponse)
       begin
         if TResponseHandler.New(FOwner).Handle(Response) then
-          FController.GetCadastro(FController.mmtAgrupamentoCOD_CAD_AGR.AsString, OnStart);
+          Controller.GetCadastro(Controller.mmtAgrupamentoCOD_CAD_AGR.AsString, OnStart);
       end);
 end;
 

@@ -5,7 +5,7 @@ interface
 uses
   System.SysUtils, System.Classes, FileManager.Providers.Controllers.Base, FileManager.Providers.Frames.FileUpload,
   FileManager.Providers.Response.Default, FileManager.Providers.Response.Intf, FileManager.Providers.Aguarde.Impl,
-  FileManager.Providers.Request, System.JSON, FileManager.Providers.Constants;
+  FileManager.Providers.Request, System.JSON, FileManager.Providers.Constants, REST.Types;
 
 type
   TUploadCallBack = reference to procedure(const Response: IResponse; const FileItem: TFrameFileUpload);
@@ -31,7 +31,7 @@ var
   Request: TRequest;
 begin
   Result := 0;
-  Request := TRequest.Create(GetFileServerURL);
+  Request := TRequest.Create(GetServerURL, GetToken);
   try
     Request.Clear.SetResource('Arquivo').AddBody(FileData, False).Post(Response);
   finally
@@ -75,14 +75,14 @@ begin
         IdAnexo := CreateArquivo(FileItem.GetFileData, Response).ToString;
         if not Response.Success then
           Exit;
-        Request := TRequest.Create(GetFileServerURL);
+        Request := TRequest.Create(GetServerURL, GetToken);
         Anexo := TMemoryStream.Create;
         try
           Anexo.LoadFromFile(FileItem.GetFilePath);
-          Request.Clear.SetResource('Arquivo/{Id}/Upload').AddURLParam('Id', IdAnexo).AddFile('Anexo', Anexo).Post(Response);
+          Request.Clear.SetResource('Arquivo/{Id}/Upload').AddParam('Id', IdAnexo, pkURLSEGMENT).AddFile('Anexo', Anexo).Post(Response);
         finally
           if not Request.ProcessResponse(Response) then
-            Request.Clear.SetResource('Arquivo/{Id}').AddURLParam('Id', IdAnexo).DELETE(Response);
+            Request.Clear.SetResource('Arquivo/{Id}').AddParam('Id', IdAnexo, pkURLSEGMENT).DELETE(Response);
           Request.Free;
           Anexo.Free;
         end;

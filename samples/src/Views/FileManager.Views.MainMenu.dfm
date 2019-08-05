@@ -30,7 +30,7 @@ object FrmServidorArquivos: TFrmServidorArquivos
     Caption = 'Origin'
   end
   object lblTamanhoMaximo: TLabel
-    Left = 591
+    Left = 556
     Top = 204
     Width = 104
     Height = 13
@@ -44,8 +44,8 @@ object FrmServidorArquivos: TFrmServidorArquivos
     Caption = 'Group ID'
   end
   object lblSistema: TLabel
-    Left = 24
-    Top = 146
+    Left = 182
+    Top = 100
     Width = 35
     Height = 13
     Caption = 'System'
@@ -53,9 +53,9 @@ object FrmServidorArquivos: TFrmServidorArquivos
   object lblPai: TLabel
     Left = 182
     Top = 8
-    Width = 69
+    Width = 83
     Height = 13
-    Caption = 'Father Group'
+    Caption = 'Father Group ID'
   end
   object lblMainFolderName: TLabel
     Left = 182
@@ -66,21 +66,28 @@ object FrmServidorArquivos: TFrmServidorArquivos
   end
   object lblServerURL: TLabel
     Left = 24
-    Top = 192
+    Top = 146
     Width = 54
     Height = 13
     Caption = 'Server URL'
   end
-  object btnAbrir: TButton
+  object Label1: TLabel
     Left = 24
-    Top = 256
-    Width = 137
+    Top = 192
+    Width = 30
+    Height = 13
+    Caption = 'Token'
+  end
+  object btnExecute: TButton
+    Left = 24
+    Top = 238
+    Width = 295
     Height = 25
-    Caption = 'View'
+    Caption = 'Execute'
     DoubleBuffered = False
     ParentDoubleBuffered = False
     TabOrder = 5
-    OnClick = btnAbrirClick
+    OnClick = btnExecuteClick
   end
   object edtTableName: TEdit
     Left = 24
@@ -88,6 +95,7 @@ object FrmServidorArquivos: TFrmServidorArquivos
     Width = 137
     Height = 21
     TabOrder = 4
+    Text = 'GR_PESSOAS'
   end
   object edtIdOrigin: TEdit
     Left = 24
@@ -95,19 +103,21 @@ object FrmServidorArquivos: TFrmServidorArquivos
     Width = 137
     Height = 21
     TabOrder = 1
+    Text = '1'
   end
   object edtMaxFileSize: TEdit
-    Left = 591
+    Left = 556
     Top = 223
-    Width = 137
+    Width = 200
     Height = 21
+    Alignment = taRightJustify
     TabOrder = 6
     Text = '1'
   end
   object grpFilesType: TGroupBox
-    Left = 591
+    Left = 556
     Top = 8
-    Width = 226
+    Width = 200
     Height = 190
     Caption = 'Files Type (optional)'
     TabOrder = 7
@@ -165,6 +175,7 @@ object FrmServidorArquivos: TFrmServidorArquivos
     Top = 27
     Width = 137
     Height = 21
+    Alignment = taRightJustify
     TabOrder = 0
   end
   object edtFatherGroup: TEdit
@@ -172,6 +183,7 @@ object FrmServidorArquivos: TFrmServidorArquivos
     Top = 27
     Width = 137
     Height = 21
+    Alignment = taRightJustify
     TabOrder = 2
   end
   object edtMainFolderName: TEdit
@@ -180,11 +192,12 @@ object FrmServidorArquivos: TFrmServidorArquivos
     Width = 137
     Height = 21
     TabOrder = 3
+    Text = 'Pessoa 1'
   end
   object grpPermissions: TGroupBox
     Left = 350
     Top = 8
-    Width = 226
+    Width = 200
     Height = 115
     Caption = 'Permissions (optional)'
     TabOrder = 8
@@ -224,7 +237,7 @@ object FrmServidorArquivos: TFrmServidorArquivos
   object grpGroupPermissions: TGroupBox
     Left = 350
     Top = 129
-    Width = 226
+    Width = 200
     Height = 115
     Caption = 'Group Permission (optional)'
     TabOrder = 9
@@ -262,18 +275,49 @@ object FrmServidorArquivos: TFrmServidorArquivos
     end
   end
   object edtSystemName: TEdit
-    Left = 24
-    Top = 165
+    Left = 182
+    Top = 119
     Width = 137
     Height = 21
     TabOrder = 10
+    Text = 'SIA'
   end
   object edtServerURL: TEdit
     Left = 24
-    Top = 211
+    Top = 165
     Width = 295
     Height = 21
     TabOrder = 11
     Text = 'http://localhost:8080/fiorilli/api/files'
+  end
+  object edtToken: TEdit
+    Left = 24
+    Top = 211
+    Width = 295
+    Height = 21
+    TabOrder = 12
+    Text = 
+      'bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJGaW9yaWxs' +
+      'aSBTL0MgU29mdHdhcmUiLCJleHAiOjE1NjUwMTM0NjgsIm5iZiI6MTU2NTAwOTU2' +
+      'OCwiaWF0IjoxNTY1MDA5ODY4LCJ0aXBvIjoiMyIsInVzZXJuYW1lIjoiQG1hdGV1' +
+      'c3JvY2hhIiwibm9tZSI6IiIsInJvbGVzIjoicGVybWl0ZV9jb250cmlidWludGVf' +
+      'dmluY3VsYWRvLHBlcm1pdGVfY29udHJpYnVpbnRlX3ZpbmN1bGFkb19tb2JpbGlh' +
+      'cmlvLHBlcm1pdGVfY29udHJpYnVpbnRlX3ZpbmN1bGFkb19pbW9iaWxpYXJpbyxw' +
+      'ZXJtaXRlX2NvbnRyaWJ1aW50ZV92aW5jdWxhZG9fYWd1YSxwZXJtaXRlX2NvbnRy' +
+      'aWJ1aW50ZV92aW5jdWxhZG9fcnVyYWwscGVybWl0ZV9jb250cmlidWludGVfdmlu' +
+      'Y3VsYWRvX2NlbWl0ZXJpbyIsImV4ZXJjaWNpbyI6IjIwMTkiLCJzdWIiOiI2Iiwi' +
+      'cGVyZmlsIjoiMCJ9.2zK1FWOuFws2iWj9agegeyWhDC3gZkX4akSVie09vyuDYMO' +
+      'NQIiRORD7rhIQC_Tz2KfSxYcfTYU4Fl9ceNPYLQ'
+  end
+  object btnClear: TButton
+    Left = 24
+    Top = 269
+    Width = 295
+    Height = 25
+    Caption = 'Clear'
+    DoubleBuffered = False
+    ParentDoubleBuffered = False
+    TabOrder = 13
+    OnClick = btnClearClick
   end
 end

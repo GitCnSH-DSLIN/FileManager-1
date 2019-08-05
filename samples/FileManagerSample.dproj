@@ -109,7 +109,6 @@
         <DCCReference Include="..\src\providers\FileManager.Providers.Constants.pas"/>
         <DCCReference Include="..\src\providers\FileManager.Providers.ObserverFile.Intf.pas"/>
         <DCCReference Include="..\src\providers\aguarde\FileManager.Providers.Aguarde.Impl.pas"/>
-        <DCCReference Include="..\src\providers\request\FileManager.Providers.Request.Authentication.pas"/>
         <DCCReference Include="..\src\providers\request\FileManager.Providers.Request.pas"/>
         <DCCReference Include="..\src\providers\response\FileManager.Providers.Response.Default.pas"/>
         <DCCReference Include="..\src\providers\response\FileManager.Providers.Response.Handler.Default.pas"/>

@@ -7,7 +7,6 @@ uses
   FileManager.Providers.Constants in '..\src\providers\FileManager.Providers.Constants.pas',
   FileManager.Providers.ObserverFile.Intf in '..\src\providers\FileManager.Providers.ObserverFile.Intf.pas',
   FileManager.Providers.Aguarde.Impl in '..\src\providers\aguarde\FileManager.Providers.Aguarde.Impl.pas',
-  FileManager.Providers.Request.Authentication in '..\src\providers\request\FileManager.Providers.Request.Authentication.pas',
   FileManager.Providers.Request in '..\src\providers\request\FileManager.Providers.Request.pas',
   FileManager.Providers.Response.Default in '..\src\providers\response\FileManager.Providers.Response.Default.pas',
   FileManager.Providers.Response.Handler.Default in '..\src\providers\response\FileManager.Providers.Response.Handler.Default.pas',

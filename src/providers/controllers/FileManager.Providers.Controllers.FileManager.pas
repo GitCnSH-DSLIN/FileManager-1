@@ -92,7 +92,7 @@ begin
       var
         Request: TRequest;
       begin
-        Request := TRequest.Create(GetFileServerURL);
+        Request := TRequest.Create(GetServerURL, GetToken);
         try
           mmtAgrupamento.Table.Clear;
           mmtAgrupamento.Append;
@@ -126,7 +126,7 @@ begin
       var
         Request: TRequest;
       begin
-        Request := TRequest.Create(GetFileServerURL);
+        Request := TRequest.Create(GetServerURL, GetToken);
         try
           mmtCadastro.Table.Clear;
           mmtCadastro.Append;
@@ -161,7 +161,7 @@ begin
       var
         Request: TRequest;
       begin
-        Request := TRequest.Create(GetFileServerURL);
+        Request := TRequest.Create(GetServerURL, GetToken);
         try
           mmtPastas.Table.Clear;
           mmtPastas.Append;
@@ -220,9 +220,9 @@ begin
       var
         Request: TRequest;
       begin
-        Request := TRequest.Create(GetFileServerURL);
+        Request := TRequest.Create(GetServerURL, GetToken);
         try
-          Request.SetResource('Arquivo/{Id}').AddURLParam('Id', IdFile).DELETE(Response);
+          Request.SetResource('Arquivo/{Id}').AddParam('Id', IdFile, pkURLSEGMENT).DELETE(Response);
         finally
           Request.ProcessResponse(Response);
           Request.Free;
@@ -248,9 +248,9 @@ begin
       var
         Request: TRequest;
       begin
-        Request := TRequest.Create(GetFileServerURL);
+        Request := TRequest.Create(GetServerURL, GetToken);
         try
-          Request.SetResource('Agrupamento/{Id}').AddURLParam('Id', IdGroup).DELETE(Response);
+          Request.SetResource('Agrupamento/{Id}').AddParam('Id', IdGroup, pkURLSEGMENT).DELETE(Response);
         finally
           Request.ProcessResponse(Response);
           Request.Free;
@@ -276,10 +276,10 @@ begin
       var
         Request: TRequest;
       begin
-        Request := TRequest.Create(GetFileServerURL);
+        Request := TRequest.Create(GetServerURL, GetToken);
         try
           mmtAgrupamento.Table.Clear;
-          Request.SetResource('Agrupamento/{Id}').AddURLParam('Id', IdGroup).GET(Response);
+          Request.SetResource('Agrupamento/{Id}').AddParam('Id', IdGroup, pkURLSEGMENT).GET(Response);
         finally
           if Request.ProcessResponse(Response, True) then
             mmtAgrupamento.LoadFromJSON(Request.Response.JSONValue.GetValue<TJSONObject>);
@@ -306,10 +306,10 @@ begin
       var
         Request: TRequest;
       begin
-        Request := TRequest.Create(GetFileServerURL);
+        Request := TRequest.Create(GetServerURL, GetToken);
         try
           mmtAgrupamento.Table.Clear;
-          Request.SetResource('Cadastro/{Id}/Agrupamentos').AddURLParam('Id', mmtCadastroCOD_CAD.AsString).AddParam('raiz', 'S').GET(Response);
+          Request.SetResource('Cadastro/{Id}/Agrupamentos').AddParam('Id', mmtCadastroCOD_CAD.AsString, pkURLSEGMENT).AddParam('raiz', 'S').GET(Response);
         finally
           if Request.ProcessResponse(Response, True) then
             mmtAgrupamento.LoadFromJSON(Request.Response.JSONValue.GetValue<TJSONArray>);
@@ -336,10 +336,10 @@ begin
       var
         Request: TRequest;
       begin
-        Request := TRequest.Create(GetFileServerURL);
+        Request := TRequest.Create(GetServerURL, GetToken);
         try
           mmtArquivos.Table.Clear;
-          Request.Clear.SetResource('Pasta/{Id}/Arquivos').AddURLParam('Id', IdFolder).GET(Response);
+          Request.Clear.SetResource('Pasta/{Id}/Arquivos').AddParam('Id', IdFolder, pkURLSEGMENT).GET(Response);
         finally
           if Request.ProcessResponse(Response, True) then
             mmtArquivos.LoadFromJSON(Request.Response.JSONValue.GetValue<TJSONArray>);
@@ -366,10 +366,10 @@ begin
       var
         Request: TRequest;
       begin
-        Request := TRequest.Create(GetFileServerURL);
+        Request := TRequest.Create(GetServerURL, GetToken);
         try
           mmtCadastro.Table.Clear;
-          Request.SetResource('Cadastro/{Id}').AddURLParam('Id', Codigo).GET(Response);
+          Request.SetResource('Cadastro/{Id}').AddParam('Id', Codigo, pkURLSEGMENT).GET(Response);
         finally
           if Request.ProcessResponse(Response, True) then
             mmtCadastro.LoadFromJSON(Request.Response.JSONValue.GetValue<TJSONObject>);
@@ -396,10 +396,10 @@ begin
       var
         Request: TRequest;
       begin
-        Request := TRequest.Create(GetFileServerURL);
+        Request := TRequest.Create(GetServerURL, GetToken);
         try
           mmtPastas.Table.Clear;
-          Request.SetResource('Agrupamento/{Id}/Pastas').AddURLParam('Id', mmtAgrupamentoCOD_AGR.AsString).GET(Response);
+          Request.SetResource('Agrupamento/{Id}/Pastas').AddParam('Id', mmtAgrupamentoCOD_AGR.AsString, pkURLSEGMENT).GET(Response);
         finally
           if Request.ProcessResponse(Response, True) then
             mmtPastas.LoadFromJSON(Request.Response.JSONValue.GetValue<TJSONArray>);
@@ -426,10 +426,10 @@ begin
       var
         Request: TRequest;
       begin
-        Request := TRequest.Create(GetFileServerURL);
+        Request := TRequest.Create(GetServerURL, GetToken);
         try
           mmtPastas.Table.Clear;
-          Request.SetResource('Agrupamento/{Id}/SubPastas').AddURLParam('Id', IdGroup).GET(Response);
+          Request.SetResource('Agrupamento/{Id}/SubPastas').AddParam('Id', IdGroup, pkURLSEGMENT).GET(Response);
         finally
           if Request.ProcessResponse(Response, True) then
             mmtPastas.LoadFromJSON(Request.Response.JSONValue.GetValue<TJSONArray>);
@@ -463,7 +463,7 @@ begin
         Anexo := TMemoryStream.Create;
         try
           try
-            Request.Get(GetFileServerURL + '/Arquivo/' + mmtArquivosCOD_ARQ.AsString + '/Download', Anexo);
+            Request.Get(GetServerURL + '/Arquivo/' + mmtArquivosCOD_ARQ.AsString + '/Download', Anexo);
             FilePath := GetTempDirectory + mmtArquivosNOME_ARQ.AsString;
             Anexo.SaveToFile(FilePath);
             ShellExecute(Application.Handle, 'open', PChar(FilePath), nil, nil, SW_SHOWNORMAL);
@@ -499,9 +499,9 @@ begin
       var
         Request: TRequest;
       begin
-        Request := TRequest.Create(GetFileServerURL);
+        Request := TRequest.Create(GetServerURL, GetToken);
         try
-          Request.SetResource('Arquivo/{Id}').AddURLParam('Id', FileData.GetValue<string>('COD_ARQ')).AddBody(FileData).PUT(Response);
+          Request.SetResource('Arquivo/{Id}').AddParam('Id', FileData.GetValue<string>('COD_ARQ'), pkURLSEGMENT).AddBody(FileData).PUT(Response);
         finally
           Request.ProcessResponse(Response);
           Request.Free;
@@ -527,9 +527,9 @@ begin
       var
         Request: TRequest;
       begin
-        Request := TRequest.Create(GetFileServerURL);
+        Request := TRequest.Create(GetServerURL, GetToken);
         try
-          Request.SetResource('Pasta/{Id}').AddURLParam('Id', FolderData.GetValue<string>('COD_PAS')).AddBody(FolderData).PUT(Response);
+          Request.SetResource('Pasta/{Id}').AddParam('Id', FolderData.GetValue<string>('COD_PAS'), pkURLSEGMENT).AddBody(FolderData).PUT(Response);
         finally
           Request.ProcessResponse(Response);
           Request.Free;
@@ -555,9 +555,9 @@ begin
       var
         Request: TRequest;
       begin
-        Request := TRequest.Create(GetFileServerURL);
+        Request := TRequest.Create(GetServerURL, GetToken);
         try
-          Request.SetResource('Agrupamento/{Id}').AddURLParam('Id', GroupData.GetValue<string>('COD_AGR')).AddBody(GroupData).PUT(Response);
+          Request.SetResource('Agrupamento/{Id}').AddParam('Id', GroupData.GetValue<string>('COD_AGR'), pkURLSEGMENT).AddBody(GroupData).PUT(Response);
         finally
           Request.ProcessResponse(Response);
           Request.Free;

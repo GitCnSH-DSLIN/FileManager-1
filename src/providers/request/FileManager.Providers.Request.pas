@@ -2,42 +2,38 @@ unit FileManager.Providers.Request;
 
 interface
 
-uses Data.DB, REST.Client, REST.Response.Adapter, FileManager.Providers.Request.Authentication, REST.Types,
-  System.SysUtils, System.JSON, FileManager.Providers.Constants, FileManager.Providers.Response.Intf, System.Math,
-  System.Classes;
+uses Data.DB, REST.Client, REST.Response.Adapter, REST.Types, System.SysUtils, System.JSON, FileManager.Providers.Constants,
+  FileManager.Providers.Response.Intf, System.Math, System.Classes;
 
 type
   TRequest = class
   private
     FBeforeExecute: TProc;
-    FAuthentication: TRequestAuthentication;
     FRESTRequest: TRESTRequest;
     FRESTResponse: TRESTResponse;
     FRESTClient: TRESTClient;
+    FToken: string;
     procedure Execute(const Method: TRESTRequestMethod; const Response: IResponse);
   public
-    constructor Create(const ABaseURL: string = '');
+    constructor Create(const ABaseURL, AToken: string);
     function AddBody(const AContent: string): TRequest; overload;
     function AddBody(const AContent: TJSONObject; const AOwns: Boolean = True): TRequest; overload;
     function AddFile(const AName: string; const AContent: TStream): TRequest;
-    function AddParam(const AName, AValue: string): TRequest; overload;
-    function AddURLParam(const AName, AValue: string): TRequest; overload;
+    function AddParam(const AName, AValue: string; const AKind: TRESTRequestParameterKind = pkQUERY): TRequest;
     function AddHeader(const AName, AValue: string; const AOptions: TRESTRequestParameterOptions = []): TRequest;
     function ClearBody: TRequest;
     function ClearParams: TRequest;
     function Clear: TRequest;
-    function SetBaseURL(const ABaseURL: string = ''): TRequest;
-    function SetResource(const AResource: string = ''): TRequest;
-    function SetResourceSuffix(const AResourceSuffix: string = ''): TRequest;
+    function SetBaseURL(const ABaseURL: string): TRequest;
+    function SetResource(const AResource: string): TRequest;
+    function SetResourceSuffix(const AResourceSuffix: string): TRequest;
     function SetBeforeExecute(const BeforeRequest: TProc): TRequest;
-    function GET(const Response: IResponse = nil): TRequest;
-    function DELETE(const Response: IResponse = nil): TRequest;
-    function POST(const Response: IResponse = nil): TRequest;
-    function PUT(const Response: IResponse = nil): TRequest;
-    function Authentication: TRequestAuthentication;
+    function GET(const Response: IResponse): TRequest;
+    function DELETE(const Response: IResponse): TRequest;
+    function POST(const Response: IResponse): TRequest;
+    function PUT(const Response: IResponse): TRequest;
     function Response: TRESTResponse;
     function ProcessResponse(const Response: IResponse; const IgnoreNotFound: Boolean = False): Boolean; overload;
-    function ProcessResponse: Boolean; overload;
     destructor Destroy; override;
   end;
 
@@ -45,13 +41,14 @@ implementation
 
 { TRequest }
 
-constructor TRequest.Create(const ABaseURL: string = '');
+constructor TRequest.Create(const ABaseURL, AToken: string);
 begin
   FRESTResponse := TRESTResponse.Create(nil);
   FRESTClient := TRESTClient.Create(nil);
   FRESTRequest := TRESTRequest.Create(nil);
   FRESTRequest.Client := FRESTClient;
   FRESTRequest.Response := FRESTResponse;
+  FToken := AToken;
   Self.SetBaseURL(ABaseURL);
 end;
 
@@ -99,25 +96,11 @@ begin
   end;
 end;
 
-function TRequest.AddURLParam(const AName, AValue: string): TRequest;
+function TRequest.AddParam(const AName, AValue: string; const AKind: TRESTRequestParameterKind = pkQUERY): TRequest;
 begin
   Result := Self;
   if (not AName.Trim.IsEmpty) and (not AValue.Trim.IsEmpty) then
-    FRESTRequest.AddParameter(AName, AValue, TRESTRequestParameterKind.pkURLSEGMENT);
-end;
-
-function TRequest.AddParam(const AName, AValue: string): TRequest;
-begin
-  Result := Self;
-  if (not AName.Trim.IsEmpty) and (not AValue.Trim.IsEmpty) then
-    FRESTRequest.AddParameter(AName, AValue);
-end;
-
-function TRequest.Authentication: TRequestAuthentication;
-begin
-  if not Assigned(FAuthentication) then
-    FAuthentication := TRequestAuthentication.Create(FRESTClient);
-  Result := FAuthentication;
+    FRESTRequest.AddParameter(AName, AValue, AKind);
 end;
 
 function TRequest.Clear: TRequest;
@@ -147,7 +130,6 @@ end;
 
 destructor TRequest.Destroy;
 begin
-  FAuthentication.Free;
   FRESTRequest.Free;
   FRESTClient.Free;
   FRESTResponse.Free;
@@ -159,6 +141,8 @@ begin
   if Assigned(FBeforeExecute) then
     FBeforeExecute;
   FRESTRequest.Method := Method;
+  if not FToken.Trim.IsEmpty then
+    Self.AddHeader('Authorization', FToken, [poDoNotEncode]);
   try
     FRESTRequest.Execute;
   except
@@ -182,11 +166,6 @@ function TRequest.POST(const Response: IResponse): TRequest;
 begin
   Result := Self;
   Execute(rmPOST, Response);
-end;
-
-function TRequest.ProcessResponse: Boolean;
-begin
-  Result := (FRESTResponse.StatusCode = TResponseCode.Sucess);
 end;
 
 function TRequest.ProcessResponse(const Response: IResponse; const IgnoreNotFound: Boolean = False): Boolean;
@@ -225,7 +204,7 @@ begin
   Execute(rmPUT, Response);
 end;
 
-function TRequest.SetBaseURL(const ABaseURL: string = ''): TRequest;
+function TRequest.SetBaseURL(const ABaseURL: string): TRequest;
 begin
   Result := Self;
   FRESTClient.BaseURL := ABaseURL;
@@ -237,20 +216,16 @@ begin
   FBeforeExecute := BeforeRequest;
 end;
 
-function TRequest.SetResource(const AResource: string = ''): TRequest;
+function TRequest.SetResource(const AResource: string): TRequest;
 begin
   Result := Self;
-  Self.ClearBody;
-  Self.ClearParams;
   FRESTRequest.ResourceSuffix := EmptyStr;
   FRESTRequest.Resource := AResource;
 end;
 
-function TRequest.SetResourceSuffix(const AResourceSuffix: string = ''): TRequest;
+function TRequest.SetResourceSuffix(const AResourceSuffix: string): TRequest;
 begin
   Result := Self;
-  Self.ClearBody;
-  Self.ClearParams;
   FRESTRequest.ResourceSuffix := AResourceSuffix;
 end;
 

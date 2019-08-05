@@ -9,18 +9,18 @@ uses
 type
   TFileManagerController = class(TDataModule)
     procedure DataModuleCreate(Sender: TObject);
-    procedure DataModuleDestroy(Sender: TObject);
   private
-    Request: TRequest;
     FTempDirectory: string;
-    FFileServerURL: string;
+    FServerURL: string;
+    FToken: string;
   protected
-    function GetRequest: TRequest;
-    function GetFileServerURL: string;
+    function GetServerURL: string;
     function GetTempDirectory: string;
+    function GetToken: string;
     function FormatFileSize(const FileSize: Int64): string;
   public
-    constructor Create(const ServerURL: string); reintroduce;
+    procedure SetToken(const Vaue: string);
+    procedure SetServerURL(const Value: string);
   end;
 
 implementation
@@ -29,21 +29,11 @@ implementation
 
 {$R *.dfm}
 
-constructor TFileManagerController.Create(const ServerURL: string);
-begin
-  inherited Create(nil);
-  FFileServerURL := ServerURL;
-end;
-
 procedure TFileManagerController.DataModuleCreate(Sender: TObject);
 begin
-  Request := TRequest.Create(FFileServerURL);
+  FServerURL := EmptyStr;
   FTempDirectory := EmptyStr;
-end;
-
-procedure TFileManagerController.DataModuleDestroy(Sender: TObject);
-begin
-  Request.Free;
+  FToken := EmptyStr;
 end;
 
 function TFileManagerController.FormatFileSize(const FileSize: Int64): string;
@@ -58,14 +48,9 @@ begin
   Result := FormatFloat('###0.##', FileSize / IntPower(1024, I)) + ' ' + Description[I];
 end;
 
-function TFileManagerController.GetFileServerURL: string;
+function TFileManagerController.GetServerURL: string;
 begin
- Result := FFileServerURL;
-end;
-
-function TFileManagerController.GetRequest: TRequest;
-begin
-  Result := Request;
+ Result := FServerURL;
 end;
 
 function TFileManagerController.GetTempDirectory: string;
@@ -78,6 +63,21 @@ begin
     FTempDirectory := StrPas(TempFolder);
   end;
   Result := FTempDirectory;
+end;
+
+function TFileManagerController.GetToken: string;
+begin
+  Result := FToken;
+end;
+
+procedure TFileManagerController.SetServerURL(const Value: string);
+begin
+  FServerURL := Value;
+end;
+
+procedure TFileManagerController.SetToken(const Vaue: string);
+begin
+  FToken := Vaue;
 end;
 
 end.

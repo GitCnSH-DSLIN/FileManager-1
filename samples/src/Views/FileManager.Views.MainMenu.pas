@@ -8,7 +8,7 @@ uses
 
 type
   TFrmServidorArquivos = class(TForm)
-    btnAbrir: TButton;
+    btnExecute: TButton;
     lblTable: TLabel;
     edtTableName: TEdit;
     lblOrigem: TLabel;
@@ -42,7 +42,11 @@ type
     edtSystemName: TEdit;
     edtServerURL: TEdit;
     lblServerURL: TLabel;
-    procedure btnAbrirClick(Sender: TObject);
+    edtToken: TEdit;
+    Label1: TLabel;
+    btnClear: TButton;
+    procedure btnExecuteClick(Sender: TObject);
+    procedure btnClearClick(Sender: TObject);
   end;
 
 var
@@ -52,13 +56,25 @@ implementation
 
 {$R *.dfm}
 
-procedure TFrmServidorArquivos.btnAbrirClick(Sender: TObject);
+procedure TFrmServidorArquivos.btnClearClick(Sender: TObject);
+begin
+  edtIdOrigin.Clear;
+  edtTableName.Clear;
+  edtSystemName.Clear;
+  edtFatherGroup.Clear;
+  edtIdGroup.Clear;
+  edtMainFolderName.Clear;
+end;
+
+procedure TFrmServidorArquivos.btnExecuteClick(Sender: TObject);
 var
   FileManager: TFileManager;
 begin
-  FileManager := TFileManager.Create(edtServerURL.Text);
+  FileManager := TFileManager.Create;
   try
     FileManager.MaxFileSize := FileManager.ONE_MB_SIZE * StrToInt64Def(edtMaxFileSize.Text, 1);
+    FileManager.ServerURL := edtServerURL.Text;
+    FileManager.Token := edtToken.Text;
     FileManager.FileServer.IdOrigin := edtIdOrigin.Text;
     FileManager.FileServer.TableName := edtTableName.Text;
     FileManager.FileServer.SystemName := edtSystemName.Text;
@@ -68,12 +84,6 @@ begin
     FileManager.Execute;
   finally
     FileManager.Free;
-    edtIdOrigin.Clear;
-    edtTableName.Clear;
-    edtFatherGroup.Clear;
-    edtMainFolderName.Clear;
-    edtFatherGroup.Clear;
-    edtSystemName.Clear;
   end;
 end;
 
