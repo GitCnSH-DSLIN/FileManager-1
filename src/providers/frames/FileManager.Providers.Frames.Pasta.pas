@@ -5,12 +5,9 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics, dxGDIPlusClasses,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, FileManager.Providers.Frames.Base, Vcl.ExtCtrls, Vcl.StdCtrls, Data.DB, System.UITypes,
-  System.JSON, FileManager.Providers.Dialogs.Input;
+  System.JSON, FileManager.Providers.Dialogs.Input, Providers.Helpers.JSON, Providers.Types.CallBack;
 
 type
-  TOpenFolder = reference to procedure(const IdGroup, IdFolder, FolderName: string);
-  TEditFolder = reference to procedure(const FolderData: TJSONObject);
-  TDeleteGroup = reference to procedure(const IdGroup: string; const FrameFolder: TFrameBase);
   TFramePasta = class(TFrameBase)
     imgFolder: TImage;
     lblDataInclusao: TLabel;
@@ -51,6 +48,7 @@ implementation
 constructor TFramePasta.Create(const AOwner: TComponent);
 begin
   inherited Create(AOwner);
+  Self.Visible := False;
   if (AOwner is TWinControl) then
     Self.Parent := TWinControl(AOwner);
   Self.Align := TAlign.alTop;
@@ -103,13 +101,18 @@ var
   Descricao: string;
 begin
   if TDialogsInput.Show('Informações da Pasta', Descricao, lblFolderName.Caption) then
-    if not Descricao.Trim.IsEmpty then
+    if not Descricao.Trim.IsEmpty and not Descricao.Trim.Equals(lblFolderName.Caption) then
     begin
-      lblFolderName.Caption := Descricao;
-      FFolderData.RemovePair('DESCR_PAS');
-      FFolderData.AddPair('DESCR_PAS', Descricao);
+      FFolderData.UpdatePair('DESCR_PAS', Descricao);
       if Assigned(OnEditFolder) then
-        OnEditFolder(FFolderData);
+        OnEditFolder(FFolderData,
+          procedure(const Response: Boolean)
+          begin
+            if Response then
+              lblFolderName.Caption := Descricao
+            else
+              FFolderData.UpdatePair('DESCR_PAS', lblFolderName.Caption);
+          end);
     end;
 end;
 

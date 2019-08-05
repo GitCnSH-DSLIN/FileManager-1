@@ -7,12 +7,9 @@ uses
   Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, dxGDIPlusClasses, cxClasses, cxGraphics, FileManager.Providers.Modulos.Imagens,
   FileManager.Providers.Types.TipoArquivo, Data.DB, FileManager.Providers.Response.Handler.Default,
   FileManager.Providers.Response.Intf, System.UITypes, System.JSON, FileManager.Providers.Dialogs.Input,
-  FileManager.Providers.Frames.Base;
+  FileManager.Providers.Frames.Base, Providers.Helpers.JSON, Providers.Types.CallBack;
 
 type
-  TDownloadFile = reference to procedure(const IdFile: string);
-  TEditFile = reference to procedure(const FolderData: TJSONObject);
-  TDeleteFile = reference to procedure(const IdFile: string; const FrameFile: TFrameBase);
   TFrameArquivo = class(TFrameBase)
     imgFileKind: TImage;
     Shape: TShape;
@@ -51,6 +48,7 @@ implementation
 constructor TFrameArquivo.Create(const AOwner: TComponent);
 begin
   inherited Create(AOwner);
+  Self.Visible := False;
   if (AOwner is TWinControl) then
     Self.Parent := TWinControl(AOwner);
   Self.Align := TAlign.alTop;
@@ -92,13 +90,18 @@ var
   Descricao: string;
 begin
   if TDialogsInput.Show('Informações do Arquivo', Descricao, lblFileName.Caption) then
-    if not Descricao.Trim.IsEmpty then
+    if not Descricao.Trim.IsEmpty and not Descricao.Trim.Equals(lblFileName.Caption) then
     begin
-      lblFileName.Caption := Descricao;
-      FFileData.RemovePair('DESCRICAO_ARQ');
-      FFileData.AddPair('DESCRICAO_ARQ', Descricao);
+      FFileData.UpdatePair('DESCRICAO_ARQ', Descricao);
       if Assigned(OnEditFile) then
-        OnEditFile(FFileData);
+        OnEditFile(FFileData,
+          procedure(const Response: Boolean)
+          begin
+            if Response then
+              lblFileName.Caption := Descricao
+            else
+              FFileData.UpdatePair('DESCRICAO_ARQ', lblFileName.Caption);
+          end);
     end;
 end;
 

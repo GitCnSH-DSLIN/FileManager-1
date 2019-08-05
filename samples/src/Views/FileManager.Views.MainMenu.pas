@@ -42,9 +42,9 @@ type
     edtSystemName: TEdit;
     edtServerURL: TEdit;
     lblServerURL: TLabel;
-    edtToken: TEdit;
     Label1: TLabel;
     btnClear: TButton;
+    edtToken: TEdit;
     procedure btnExecuteClick(Sender: TObject);
     procedure btnClearClick(Sender: TObject);
   end;

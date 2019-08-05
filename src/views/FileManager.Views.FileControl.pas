@@ -32,7 +32,7 @@ type
     ShapeList: TShape;
     imgClose: TImage;
     pnlFooterList: TPanel;
-    btnIncluir: TButton;
+    btnUpload: TButton;
     pnlFileListContent: TPanel;
     pnlFileList: TPanel;
     pnlHeaderFileList: TPanel;
@@ -50,7 +50,7 @@ type
     procedure btnAnexarClick(Sender: TObject);
     procedure btnEnviarClick(Sender: TObject);
     procedure imgCloseClick(Sender: TObject);
-    procedure btnIncluirClick(Sender: TObject);
+    procedure btnUploadClick(Sender: TObject);
     procedure btnNovaPastaClick(Sender: TObject);
     procedure imgPreviousFolderClick(Sender: TObject);
     procedure tabUploadFilesShow(Sender: TObject);
@@ -63,6 +63,7 @@ type
     FRefreshFolder: Boolean;
     procedure RemoveFileItem(const FileFrame: TFrame);
     procedure AddFileItem(const FilePath: string);
+    procedure ShowFilesToUpload;
   public
     Controller: TControllerFileControl;
     FileServer: TFileServer;
@@ -90,8 +91,11 @@ var
   I: Integer;
 begin
   if OpenDialog.Execute then
+  begin
     for I := 0 to Pred(OpenDialog.Files.Count) do
       AddFileItem(OpenDialog.Files[I]);
+    ShowFilesToUpload;
+  end;
 end;
 
 procedure TFrmFileControl.btnEnviarClick(Sender: TObject);
@@ -118,7 +122,7 @@ begin
   end;
 end;
 
-procedure TFrmFileControl.btnIncluirClick(Sender: TObject);
+procedure TFrmFileControl.btnUploadClick(Sender: TObject);
 begin
   pclFileControl.ActivePage := tabUploadFiles;
 end;
@@ -131,7 +135,7 @@ end;
 procedure TFrmFileControl.FormCreate(Sender: TObject);
 begin
   FBlockUI := TBlockUI.Create(TWinControl(Self.Owner));
-  FDragDropArea := TFrmDragDropArea.Create(pnlDragToUpload, AddFileItem);
+  FDragDropArea := TFrmDragDropArea.Create(pnlDragToUpload, AddFileItem, ShowFilesToUpload);
   FilesList :=  TObjectList<TFrameFileUpload>.Create;
   Controller := TControllerFileControl.Create(Self);
   FileServer := TFileServer.Create(pnlFileList, Self);
@@ -179,6 +183,15 @@ procedure TFrmFileControl.RemoveFileItem(const FileFrame: TFrame);
 begin
   FilesList.Remove(TFrameFileUpload(FileFrame));
   lblZeroFiles.Visible := (FilesList.Count = 0);
+end;
+
+procedure TFrmFileControl.ShowFilesToUpload;
+var
+  I: Integer;
+begin
+  for I := 0 to Pred(pnlContentFiles.ControlCount) do
+    if (pnlContentFiles.Controls[I] is TFrameBase) then
+      TFrameBase(pnlContentFiles.Controls[I]).Show;
 end;
 
 procedure TFrmFileControl.tabUploadFilesShow(Sender: TObject);

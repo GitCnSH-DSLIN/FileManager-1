@@ -1675,19 +1675,19 @@ object FrmFileControl: TFrmFileControl
         ParentBackground = False
         ParentFont = False
         TabOrder = 1
-        object btnIncluir: TButton
-          Left = 91
+        object btnUpload: TButton
+          Left = 101
           Top = 4
-          Width = 75
+          Width = 85
           Height = 25
-          Caption = 'Upload'
+          Caption = 'Novo Arquivo'
           TabOrder = 0
-          OnClick = btnIncluirClick
+          OnClick = btnUploadClick
         end
         object btnNovaPasta: TButton
           Left = 10
           Top = 4
-          Width = 75
+          Width = 85
           Height = 25
           Caption = 'Nova Pasta'
           TabOrder = 1
@@ -3436,7 +3436,7 @@ object FrmFileControl: TFrmFileControl
             Align = alClient
             Alignment = taCenter
             AutoSize = False
-            Caption = 'Nenhum Documento Anexado'
+            Caption = 'Nenhum Arquivo Anexado'
             Color = clBtnFace
             Font.Charset = DEFAULT_CHARSET
             Font.Color = 3947580
@@ -3480,16 +3480,16 @@ object FrmFileControl: TFrmFileControl
         object btnAnexar: TButton
           Left = 10
           Top = 4
-          Width = 75
+          Width = 85
           Height = 25
           Caption = 'Procurar'
           TabOrder = 0
           OnClick = btnAnexarClick
         end
         object btnEnviar: TButton
-          Left = 711
+          Left = 701
           Top = 4
-          Width = 75
+          Width = 85
           Height = 25
           Caption = 'Enviar'
           TabOrder = 1

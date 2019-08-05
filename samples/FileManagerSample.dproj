@@ -161,6 +161,8 @@
             <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
+        <DCCReference Include="..\src\providers\helpers\Providers.Helpers.JSON.pas"/>
+        <DCCReference Include="..\src\providers\types\Providers.Types.CallBack.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

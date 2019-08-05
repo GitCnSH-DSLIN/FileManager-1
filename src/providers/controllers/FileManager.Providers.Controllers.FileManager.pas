@@ -501,7 +501,7 @@ begin
       begin
         Request := TRequest.Create(GetServerURL, GetToken);
         try
-          Request.SetResource('Arquivo/{Id}').AddParam('Id', FileData.GetValue<string>('COD_ARQ'), pkURLSEGMENT).AddBody(FileData).PUT(Response);
+          Request.SetResource('Arquivo/{Id}').AddParam('Id', FileData.GetValue<string>('COD_ARQ'), pkURLSEGMENT).AddBody(FileData, False).PUT(Response);
         finally
           Request.ProcessResponse(Response);
           Request.Free;
@@ -529,7 +529,7 @@ begin
       begin
         Request := TRequest.Create(GetServerURL, GetToken);
         try
-          Request.SetResource('Pasta/{Id}').AddParam('Id', FolderData.GetValue<string>('COD_PAS'), pkURLSEGMENT).AddBody(FolderData).PUT(Response);
+          Request.SetResource('Pasta/{Id}').AddParam('Id', FolderData.GetValue<string>('COD_PAS'), pkURLSEGMENT).AddBody(FolderData, False).PUT(Response);
         finally
           Request.ProcessResponse(Response);
           Request.Free;

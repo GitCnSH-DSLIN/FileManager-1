@@ -45,6 +45,7 @@ implementation
 constructor TFrameFileUpload.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
+  Self.Visible := False;
   if (AOwner is TWinControl) then
     Self.Parent := TWinControl(AOwner);
   Self.Align := TAlign.alTop;
@@ -109,7 +110,7 @@ end;
 
 procedure TFrameFileUpload.LoadFileData(const FilePath, IdFolder: string);
 begin
-  lblFileName.Caption := ExtractFileName(FilePath);
+  lblFileName.Caption := StringReplace(ExtractFileName(FilePath), ExtractFileExt(FilePath), EmptyStr, [rfIgnoreCase, rfReplaceAll]);
   lblFileSize.Caption := FormatFileSize(GetFileSize(FilePath));
   imgFileKind.Picture := DMImagens.cxImageCollection.Items.Items[StrToTipoDocumento(ExtractFileExt(FilePath)).GetImageIndex].Picture;
   FFilePath := FilePath;
@@ -118,7 +119,7 @@ begin
     begin
       FFileData.AddPair('CONTENT_TYPE_ARQ', GetFileMIMEType(FilePath));
       FFileData.AddPair('NOME_ARQ', ExtractFileName(FilePath));
-      FFileData.AddPair('DESCRICAO_ARQ', ExtractFileName(FilePath));
+      FFileData.AddPair('DESCRICAO_ARQ', lblFileName.Caption);
       FFileData.AddPair('TAMANHO_ARQ', TJSONNumber.Create(GetFileSize(FilePath)));
       FFileData.AddPair('COD_PAS_ARQ', IdFolder);
     end).Start;

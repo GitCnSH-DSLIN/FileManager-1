@@ -7,7 +7,7 @@ uses
   System.SysUtils, FileManager.Providers.Controllers.FileManager, FileManager.Providers.Response.Handler.Default,
   FileManager.Providers.Response.Intf, Vcl.WinXCtrls, System.Classes, Vcl.StdCtrls, FileManager.Providers.Dialogs.Input,
   FileManager.Providers.Frames.Base, System.Generics.Collections, FileManager.Providers.PathControl, Vcl.ExtCtrls,
-  Dialogs4D.Factory, DataSet.Serialize.Helper, System.JSON;
+  Dialogs4D.Factory, DataSet.Serialize.Helper, System.JSON, Providers.Types.CallBack;
 
 type
   TFileServer = class
@@ -27,12 +27,13 @@ type
     FPreviousImage: TImage;
     procedure OnStart(const Response: IResponse);
     procedure Clear;
+    procedure ShowFolderData;
     procedure OpenFolder(const IdGroup, IdFolder, FolderName: string);
-    procedure EditFolder(const FolderData: TJSONObject);
+    procedure EditFolder(const FolderData: TJSONObject; const CallBack: TBooleanCallBack = nil);
     procedure EditGroup(const GroupData: TJSONObject);
     procedure DeleteGroup(const IdGroup: string; const FrameFolder: TFrameBase);
     procedure DownloadFile(const IdFile: string);
-    procedure EditFile(const FileData: TJSONObject);
+    procedure EditFile(const FileData: TJSONObject; const CallBack: TBooleanCallBack);
     procedure DeleteFile(const IdFile: string; const FrameFile: TFrameBase);
     procedure LoadGroup;
     procedure LoadFolders(const DataSet: TDataSet);
@@ -304,6 +305,7 @@ begin
         begin
           if (TResponseHandler.New(FOwner).Handle(Response)) then
             Self.LoadFiles(Controller.mmtArquivos);
+          ShowFolderData;
           ShowWait(False);
         end);
     end);
@@ -318,21 +320,24 @@ begin
     end);
 end;
 
-procedure TFileServer.EditFile(const FileData: TJSONObject);
+procedure TFileServer.EditFile(const FileData: TJSONObject; const CallBack: TBooleanCallBack);
 begin
   Controller.EditFile(FileData,
     procedure(const Response: IResponse)
     begin
       TResponseHandler.New(FOwner).Handle(Response);
+      CallBack(Response.Success);
     end);
 end;
 
-procedure TFileServer.EditFolder(const FolderData: TJSONObject);
+procedure TFileServer.EditFolder(const FolderData: TJSONObject; const CallBack: TBooleanCallBack = nil);
 begin
   Controller.EditFolder(FolderData,
     procedure(const Response: IResponse)
     begin
       TResponseHandler.New(FOwner).Handle(Response);
+      if Assigned(CallBack) then
+        CallBack(Response.Success);
     end);
 end;
 
@@ -400,6 +405,15 @@ end;
 procedure TFileServer.SetTabela(const Value: string);
 begin
   FTableName := Value;
+end;
+
+procedure TFileServer.ShowFolderData;
+var
+  I: Integer;
+begin
+  for I := 0 to Pred(FContent.ControlCount) do
+    if (FContent.Controls[I] is TFrameBase) then
+      TFrameBase(FContent.Controls[I]).Show;
 end;
 
 procedure TFileServer.ShowWait(const Animate: Boolean);
