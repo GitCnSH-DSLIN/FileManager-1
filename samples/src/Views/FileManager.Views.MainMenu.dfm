@@ -112,7 +112,7 @@ object FrmServidorArquivos: TFrmServidorArquivos
     Height = 21
     Alignment = taRightJustify
     TabOrder = 6
-    Text = '1'
+    Text = '5'
   end
   object grpFilesType: TGroupBox
     Left = 326
@@ -288,7 +288,7 @@ object FrmServidorArquivos: TFrmServidorArquivos
     Width = 145
     Height = 21
     TabOrder = 11
-    Text = 'http://localhost:8097/fiorilli/api/files'
+    Text = 'http://192.168.0.54:8097/fiorilli/api/files'
   end
   object btnClear: TButton
     Left = 175
