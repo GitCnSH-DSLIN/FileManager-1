@@ -26,9 +26,8 @@ type
     FPreviousImage: TImage;
     procedure OnStart(const Response: IResponse);
     procedure Clear;
-    procedure ShowFolderData;
     procedure OpenFolder(const IdGroup, IdFolder, FolderName: string);
-    procedure EditFolder(const FolderData: TJSONObject; const CallBack: TBooleanCallBack = nil);
+    procedure EditFolder(const FolderData: TJSONObject; const AOwns: Boolean; const CallBack: TBooleanCallBack = nil);
     procedure EditGroup(const GroupData: TJSONObject);
     procedure DeleteGroup(const IdGroup: string; const FrameFolder: TFrameBase);
     procedure DownloadFile(const IdFile: string);
@@ -210,7 +209,7 @@ begin
                 Controller.mmtPastas.Edit;
                 Controller.mmtPastasDESCR_PAS.AsString := FMainFolderName;
                 Controller.mmtPastas.Post;
-                EditFolder(Controller.mmtPastas.ToJSONObject);
+                EditFolder(Controller.mmtPastas.ToJSONObject, True);
               end;
 
             if TResponseHandler.New(FOwner).Handle(Response)  then
@@ -272,7 +271,6 @@ begin
         begin
           if (TResponseHandler.New(FOwner).Handle(Response)) then
             Self.LoadFiles(Controller.mmtArquivos);
-          ShowFolderData;
         end);
     end);
 end;
@@ -296,9 +294,9 @@ begin
     end);
 end;
 
-procedure TFileServer.EditFolder(const FolderData: TJSONObject; const CallBack: TBooleanCallBack = nil);
+procedure TFileServer.EditFolder(const FolderData: TJSONObject; const AOwns: Boolean; const CallBack: TBooleanCallBack = nil);
 begin
-  Controller.EditFolder(FolderData,
+  Controller.EditFolder(FolderData, AOwns,
     procedure(const Response: IResponse)
     begin
       TResponseHandler.New(FOwner).Handle(Response);
@@ -371,15 +369,6 @@ end;
 procedure TFileServer.SetTabela(const Value: string);
 begin
   FTableName := Value;
-end;
-
-procedure TFileServer.ShowFolderData;
-var
-  I: Integer;
-begin
-  for I := 0 to Pred(FContent.ControlCount) do
-    if (FContent.Controls[I] is TFrameBase) then
-      TFrameBase(FContent.Controls[I]).Show;
 end;
 
 procedure TFileServer.Start;

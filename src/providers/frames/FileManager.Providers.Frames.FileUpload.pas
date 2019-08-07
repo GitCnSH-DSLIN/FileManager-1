@@ -45,7 +45,6 @@ implementation
 constructor TFrameFileUpload.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
-  Self.Visible := False;
   if (AOwner is TWinControl) then
     Self.Parent := TWinControl(AOwner);
   Self.Align := TAlign.alTop;

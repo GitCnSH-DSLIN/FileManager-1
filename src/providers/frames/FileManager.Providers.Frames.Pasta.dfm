@@ -201,7 +201,7 @@ inherited FramePasta: TFramePasta
       Left = 0
       Top = 0
       Width = 65
-      Height = 27
+      Height = 13
       Cursor = crHandPoint
       Margins.Left = 0
       Margins.Top = 0
@@ -219,7 +219,6 @@ inherited FramePasta: TFramePasta
       OnClick = lblFolderNameClick
       OnMouseEnter = lblFolderNameMouseEnter
       OnMouseLeave = lblFolderNameMouseLeave
-      ExplicitHeight = 13
     end
   end
   object pnlEdit: TPanel

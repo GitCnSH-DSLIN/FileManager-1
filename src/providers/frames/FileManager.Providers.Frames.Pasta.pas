@@ -48,7 +48,6 @@ implementation
 constructor TFramePasta.Create(const AOwner: TComponent);
 begin
   inherited Create(AOwner);
-  Self.Visible := False;
   if (AOwner is TWinControl) then
     Self.Parent := TWinControl(AOwner);
   Self.Align := TAlign.alTop;
@@ -105,7 +104,7 @@ begin
     begin
       FFolderData.UpdatePair('DESCR_PAS', Descricao);
       if Assigned(OnEditFolder) then
-        OnEditFolder(FFolderData,
+        OnEditFolder(FFolderData, False,
           procedure(const Response: Boolean)
           begin
             if Response then

@@ -58,7 +58,7 @@ type
     procedure CreateGroup(const IdAgrupamentoPai: string; const CallBack: TResponseCallBack);
     procedure CreateFolder(const FolderName: string; const CallBack: TResponseCallBack);
     procedure EditGroup(const GroupData: TJSONObject; const CallBack: TResponseCallBack);
-    procedure EditFolder(const FolderData: TJSONObject; const CallBack: TResponseCallBack);
+    procedure EditFolder(const FolderData: TJSONObject; const AOwns: Boolean; const CallBack: TResponseCallBack);
     procedure EditFile(const FileData: TJSONObject; const CallBack: TResponseCallBack);
     procedure GetCadastro(const Codigo: string; const CallBack: TResponseCallBack);
     procedure GetGroup(const IdGroup: string; const CallBack: TResponseCallBack);
@@ -515,7 +515,7 @@ begin
     .Start;
 end;
 
-procedure TControllerFileManager.EditFolder(const FolderData: TJSONObject; const CallBack: TResponseCallBack);
+procedure TControllerFileManager.EditFolder(const FolderData: TJSONObject; const AOwns: Boolean; const CallBack: TResponseCallBack);
 var
   Response: IResponse;
 begin
@@ -529,7 +529,7 @@ begin
       begin
         Request := TRequest.Create(GetServerURL, GetToken);
         try
-          Request.SetResource('Pasta/{Id}').AddParam('Id', FolderData.GetValue<string>('COD_PAS'), pkURLSEGMENT).AddBody(FolderData, False).PUT(Response);
+          Request.SetResource('Pasta/{Id}').AddParam('Id', FolderData.GetValue<string>('COD_PAS'), pkURLSEGMENT).AddBody(FolderData, AOwns).PUT(Response);
         finally
           Request.ProcessResponse(Response);
           Request.Free;

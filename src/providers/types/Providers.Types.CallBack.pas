@@ -11,7 +11,7 @@ type
   TUploadCallBack = reference to procedure(const Response: IResponse; const FileItem: TFrameFileUpload);
 
   TOpenFolder = reference to procedure(const IdGroup, IdFolder, FolderName: string);
-  TEditFolder = reference to procedure(const FolderData: TJSONObject; const CallBack: TBooleanCallBack);
+  TEditFolder = reference to procedure(const FolderData: TJSONObject; const AOwns: Boolean; const CallBack: TBooleanCallBack);
   TDeleteGroup = reference to procedure(const IdGroup: string; const FrameFolder: TFrameBase);
 
   TDownloadFile = reference to procedure(const IdFile: string);
