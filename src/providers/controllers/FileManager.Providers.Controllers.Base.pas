@@ -4,7 +4,7 @@ interface
 
 uses
   System.SysUtils, System.Classes, FileManager.Providers.Constants, FileManager.Providers.Request, FireDAC.Comp.Client,
-  FileManager.Providers.Response.Default, FileManager.Providers.Response.Intf, Winapi.Windows, System.Math;
+  FileManager.Providers.Response.Default, FileManager.Providers.Response.Intf, Winapi.Windows, System.Math, System.StrUtils;
 
 type
   TFileManagerController = class(TDataModule)
@@ -19,7 +19,7 @@ type
     function GetToken: string;
     function FormatFileSize(const FileSize: Int64): string;
   public
-    procedure SetToken(const Vaue: string);
+    procedure SetToken(const Value: string);
     procedure SetServerURL(const Value: string);
   end;
 
@@ -75,9 +75,9 @@ begin
   FServerURL := Value;
 end;
 
-procedure TFileManagerController.SetToken(const Vaue: string);
+procedure TFileManagerController.SetToken(const Value: string);
 begin
-  FToken := Vaue;
+  FToken := IfThen(Value.StartsWith('bearer'), Value, 'bearer ' + Value);
 end;
 
 end.

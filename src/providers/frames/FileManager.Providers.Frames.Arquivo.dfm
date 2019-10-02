@@ -261,7 +261,7 @@ inherited FrameArquivo: TFrameArquivo
       Left = 0
       Top = 0
       Width = 71
-      Height = 27
+      Height = 13
       Cursor = crHandPoint
       Margins.Left = 6
       Margins.Top = 1
@@ -279,7 +279,6 @@ inherited FrameArquivo: TFrameArquivo
       OnClick = lblFileNameClick
       OnMouseEnter = lblFileNameMouseEnter
       OnMouseLeave = lblFileNameMouseLeave
-      ExplicitHeight = 13
     end
   end
   object pnlEdit: TPanel

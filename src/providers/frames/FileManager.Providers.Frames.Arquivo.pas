@@ -81,7 +81,7 @@ end;
 procedure TFrameArquivo.imgDeleteClick(Sender: TObject);
 begin
   if Assigned(OnDeleteFile) then
-    OnDeleteFile(FFileData.GetValue<string>('COD_ARQ'), Self);
+    OnDeleteFile(FFileData.GetValue<string>('cod_arq'), Self);
 end;
 
 procedure TFrameArquivo.imgEditClick(Sender: TObject);
@@ -91,7 +91,7 @@ begin
   if TDialogsInput.Show('Informações do Arquivo', Descricao, lblFileName.Caption) then
     if not Descricao.Trim.IsEmpty and not Descricao.Trim.Equals(lblFileName.Caption) then
     begin
-      FFileData.UpdatePair('DESCRICAO_ARQ', Descricao);
+      FFileData.UpdatePair('descricao_arq', Descricao);
       if Assigned(OnEditFile) then
         OnEditFile(FFileData,
           procedure(const Response: Boolean)
@@ -99,7 +99,7 @@ begin
             if Response then
               lblFileName.Caption := Descricao
             else
-              FFileData.UpdatePair('DESCRICAO_ARQ', lblFileName.Caption);
+              FFileData.UpdatePair('descricao_arq', lblFileName.Caption);
           end);
     end;
 end;
@@ -107,7 +107,7 @@ end;
 procedure TFrameArquivo.lblFileNameClick(Sender: TObject);
 begin
   if Assigned(OnDownloadFile) then
-    OnDownloadFile(FFileData.GetValue<string>('COD_ARQ'));
+    OnDownloadFile(FFileData.GetValue<string>('cod_arq'));
 end;
 
 procedure TFrameArquivo.lblFileNameMouseEnter(Sender: TObject);
@@ -129,10 +129,10 @@ end;
 procedure TFrameArquivo.LoadFileData(const FileData: TJSONObject);
 begin
   FFileData := FileData;
-  lblFileName.Caption := FFileData.GetValue<string>('DESCRICAO_ARQ');
-  lblFileSize.Caption := FormatFileSize(FFileData.GetValue<Int64>('TAMANHO_ARQ'));
-  lblDataInclusao.Caption := FormatDateTime('dd/mm/yyyy', FFileData.GetValue<TDateTime>('DTA_INC_ARQ'));
-  imgFileKind.Picture := DMImagens.cxImageCollection.Items.Items[StrToTipoDocumento(ExtractFileExt(FFileData.GetValue<string>('NOME_ARQ'))).GetImageIndex].Picture;
+  lblFileName.Caption := FFileData.GetValue<string>('descricao_arq');
+  lblFileSize.Caption := FormatFileSize(FFileData.GetValue<Int64>('tamanho_arq'));
+  lblDataInclusao.Caption := FormatDateTime('dd/mm/yyyy', FFileData.GetValue<TDateTime>('dta_inc_arq'));
+  imgFileKind.Picture := DMImagens.cxImageCollection.Items.Items[StrToTipoDocumento(ExtractFileExt(FFileData.GetValue<string>('nome_arq'))).GetImageIndex].Picture;
 end;
 
 end.

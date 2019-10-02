@@ -44,7 +44,7 @@ type
     lblServerURL: TLabel;
     Label1: TLabel;
     btnClear: TButton;
-    edtToken: TEdit;
+    edtUserName: TEdit;
     procedure btnExecuteClick(Sender: TObject);
     procedure btnClearClick(Sender: TObject);
   end;
@@ -74,7 +74,7 @@ begin
   try
     FileManager.MaxFileSize := FileManager.ONE_MB_SIZE * StrToInt64Def(edtMaxFileSize.Text, 1);
     FileManager.ServerURL := edtServerURL.Text;
-    FileManager.Token := edtToken.Text;
+    FileManager.Token := FileManager.GenerateToken(edtUserName.Text);
     FileManager.FileServer.IdOrigin := edtIdOrigin.Text;
     FileManager.FileServer.TableName := edtTableName.Text;
     FileManager.FileServer.SystemName := edtSystemName.Text;

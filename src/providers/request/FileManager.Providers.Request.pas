@@ -180,6 +180,12 @@ begin
     Result := True
   else
   begin
+    if (FRESTResponse.StatusCode = TResponseCode.Unauthorized) then
+    begin
+      Response.SetError('Usuário não autorizado!');
+      Exit;
+    end;
+
     if (FRESTResponse.StatusCode = TResponseCode.NotFound) and (IgnoreNotFound) then
       Exit;
     if not FRESTResponse.JSONValue.TryGetValue<string>('description', ResponseMessage) then

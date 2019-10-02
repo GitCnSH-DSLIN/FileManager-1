@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, FileManager.Providers.Response.Intf,
   System.JSON, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, dxGDIPlusClasses, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Buttons,
-  Registry, Vcl.BaseImageCollection, Vcl.ImageCollection, FileManager.Providers.Types.TipoArquivo, System.ImageList, Vcl.ImgList, Vcl.VirtualImageList,
+  Win.Registry, Vcl.BaseImageCollection, Vcl.ImageCollection, FileManager.Providers.Types.TipoArquivo, System.ImageList, Vcl.ImgList, Vcl.VirtualImageList,
   cxImageList, cxGraphics, cxClasses, System.IOUtils, System.Math, FileManager.Providers.ObserverFile.Intf,
   FileManager.Providers.Response.Handler.Default, Vcl.WinXCtrls, FileManager.Providers.Dialogs.Input, IdCustomHTTPServer,
   FileManager.Providers.Modulos.Imagens, FileManager.Providers.Frames.Base;
@@ -93,11 +93,11 @@ procedure TFrameFileUpload.imgEditClick(Sender: TObject);
 var
   Descricao: string;
 begin
-  if TDialogsInput.Show('Informações do Arquivo', Descricao, FFileData.GetValue<string>('DESCRICAO_ARQ')) then
+  if TDialogsInput.Show('Informações do Arquivo', Descricao, FFileData.GetValue<string>('descricao_arq')) then
     if not Descricao.Trim.IsEmpty then
     begin
-      FFileData.RemovePair('DESCRICAO_ARQ');
-      FFileData.AddPair('DESCRICAO_ARQ', Descricao);
+      FFileData.RemovePair('descricao_arq');
+      FFileData.AddPair('descricao_arq', Descricao);
       lblFileName.Caption := Descricao;
     end;
 end;
@@ -116,11 +116,11 @@ begin
   TThread.CreateAnonymousThread(
     procedure
     begin
-      FFileData.AddPair('CONTENT_TYPE_ARQ', GetFileMIMEType(FilePath));
-      FFileData.AddPair('NOME_ARQ', ExtractFileName(FilePath));
-      FFileData.AddPair('DESCRICAO_ARQ', lblFileName.Caption);
-      FFileData.AddPair('TAMANHO_ARQ', TJSONNumber.Create(GetFileSize(FilePath)));
-      FFileData.AddPair('COD_PAS_ARQ', IdFolder);
+      FFileData.AddPair('content_type_arq', GetFileMIMEType(FilePath));
+      FFileData.AddPair('nome_arq', ExtractFileName(FilePath));
+      FFileData.AddPair('descricao_arq', lblFileName.Caption);
+      FFileData.AddPair('tamanho_arq', TJSONNumber.Create(GetFileSize(FilePath)));
+      FFileData.AddPair('cod_pas_arq', IdFolder);
     end).Start;
 end;
 

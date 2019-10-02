@@ -20,7 +20,6 @@ type
     lblTitleUpload: TLabel;
     ShapeUpload: TShape;
     pnlFiles: TPanel;
-    pnlContentFiles: TPanel;
     pnlDragToUpload: TPanel;
     imgBack: TImage;
     lblZeroFiles: TLabel;
@@ -30,11 +29,10 @@ type
     pnlHeaderList: TPanel;
     lblTitleList: TLabel;
     ShapeList: TShape;
-    imgClose: TImage;
+    imgClose01: TImage;
     pnlFooterList: TPanel;
     btnUpload: TButton;
     pnlFileListContent: TPanel;
-    pnlFileList: TPanel;
     pnlHeaderFileList: TPanel;
     lblDescricao: TLabel;
     lblFileSize: TLabel;
@@ -45,17 +43,25 @@ type
     lblCurrentPath: TLabel;
     imgPreviousFolder: TImage;
     lblCurrentPath2: TLabel;
+    imgClose02: TImage;
+    pnlContentFiles: TScrollBox;
+    pnlFileList: TScrollBox;
     procedure FormDestroy(Sender: TObject);
     procedure imgBackClick(Sender: TObject);
     procedure btnAnexarClick(Sender: TObject);
     procedure btnEnviarClick(Sender: TObject);
-    procedure imgCloseClick(Sender: TObject);
+    procedure imgClose01Click(Sender: TObject);
     procedure btnUploadClick(Sender: TObject);
     procedure btnNovaPastaClick(Sender: TObject);
     procedure imgPreviousFolderClick(Sender: TObject);
     procedure tabUploadFilesShow(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure pnlContentFilesMouseWheelDown(Sender: TObject; Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
+    procedure pnlContentFilesMouseWheelUp(Sender: TObject; Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
+    procedure imgClose02Click(Sender: TObject);
+    procedure pnlFileListMouseWheelDown(Sender: TObject; Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
+    procedure pnlFileListMouseWheelUp(Sender: TObject; Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
   private
     FilesList: TObjectList<TFrameFileUpload>;
     FBlockUI: IBlockUI;
@@ -170,7 +176,34 @@ begin
   FileServer.PreviousFolder;
 end;
 
-procedure TFrmFileControl.imgCloseClick(Sender: TObject);
+procedure TFrmFileControl.pnlContentFilesMouseWheelDown(Sender: TObject; Shift: TShiftState; MousePos: TPoint;
+  var Handled: Boolean);
+begin
+  pnlContentFiles.VertScrollBar.Position := pnlContentFiles.VertScrollBar.Position + pnlContentFiles.VertScrollBar.Increment;
+end;
+
+procedure TFrmFileControl.pnlContentFilesMouseWheelUp(Sender: TObject; Shift: TShiftState; MousePos: TPoint;
+  var Handled: Boolean);
+begin
+  pnlContentFiles.VertScrollBar.Position := pnlContentFiles.VertScrollBar.Position - pnlContentFiles.VertScrollBar.Increment;
+end;
+
+procedure TFrmFileControl.pnlFileListMouseWheelDown(Sender: TObject; Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
+begin
+  pnlFileList.VertScrollBar.Position := pnlFileList.VertScrollBar.Position + pnlFileList.VertScrollBar.Increment;
+end;
+
+procedure TFrmFileControl.pnlFileListMouseWheelUp(Sender: TObject; Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
+begin
+  pnlFileList.VertScrollBar.Position := pnlFileList.VertScrollBar.Position - pnlFileList.VertScrollBar.Increment;
+end;
+
+procedure TFrmFileControl.imgClose01Click(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TFrmFileControl.imgClose02Click(Sender: TObject);
 begin
   Close;
 end;

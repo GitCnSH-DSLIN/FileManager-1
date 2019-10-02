@@ -81,12 +81,12 @@ end;
 
 function TFramePasta.GetIdFolder: string;
 begin
-  FFolderData.TryGetValue<string>('COD_PAS', Result);
+  FFolderData.TryGetValue<string>('cod_pas', Result);
 end;
 
 function TFramePasta.GetIdGroupFolder: string;
 begin
-  FFolderData.TryGetValue<string>('COD_AGR_PAS', Result);
+  FFolderData.TryGetValue<string>('cod_agr_pas', Result);
 end;
 
 procedure TFramePasta.imgDeleteClick(Sender: TObject);
@@ -102,7 +102,7 @@ begin
   if TDialogsInput.Show('Informações da Pasta', Descricao, lblFolderName.Caption) then
     if not Descricao.Trim.IsEmpty and not Descricao.Trim.Equals(lblFolderName.Caption) then
     begin
-      FFolderData.UpdatePair('DESCR_PAS', Descricao);
+      FFolderData.UpdatePair('descr_pas', Descricao);
       if Assigned(OnEditFolder) then
         OnEditFolder(FFolderData, False,
           procedure(const Response: Boolean)
@@ -110,7 +110,7 @@ begin
             if Response then
               lblFolderName.Caption := Descricao
             else
-              FFolderData.UpdatePair('DESCR_PAS', lblFolderName.Caption);
+              FFolderData.UpdatePair('descr_pas', lblFolderName.Caption);
           end);
     end;
 end;
@@ -140,8 +140,8 @@ end;
 procedure TFramePasta.LoadFolderData(const FolderData: TJSONObject);
 begin
   FFolderData := FolderData;
-  lblFolderName.Caption := FFolderData.GetValue<string>('DESCR_PAS');
-  lblDataInclusao.Caption := FormatDateTime('dd/mm/yyyy', FFolderData.GetValue<TDateTime>('DTA_INC_PAS'));
+  lblFolderName.Caption := FFolderData.GetValue<string>('descr_pas');
+  lblDataInclusao.Caption := FormatDateTime('dd/mm/yyyy', FFolderData.GetValue<TDateTime>('dta_inc_pas'));
 end;
 
 end.

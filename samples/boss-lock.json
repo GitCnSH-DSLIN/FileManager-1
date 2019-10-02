@@ -2,6 +2,14 @@
 	"hash": "d41d8cd98f00b204e9800998ecf8427e",
 	"updated": "2019-08-01T15:29:32.9114706-03:00",
 	"installedModules": {
+		"github.com/paolo-rossi/delphi-jose-jwt": {
+			"name": "delphi-jose-jwt",
+			"version": "v2.5.0",
+			"hash": "53f1be4913c3697614da00ed1a1a4ec9",
+			"artifacts": {},
+			"failed": false,
+			"changed": false
+		},
 		"github.com/viniciussanchez/blockui-vcl": {
 			"name": "blockui-vcl",
 			"version": "v1.0.1",
@@ -12,16 +20,16 @@
 		},
 		"github.com/viniciussanchez/dataset-serialize": {
 			"name": "dataset-serialize",
-			"version": "v2.4.0",
-			"hash": "9e26c63552383b40aaa1efd574b2aaeb",
+			"version": "v2.8.0",
+			"hash": "174ddd9bbe284a60df3ec6a1de343040",
 			"artifacts": {},
 			"failed": false,
 			"changed": false
 		},
 		"github.com/viniciussanchez/dialogs4delphi": {
 			"name": "dialogs4delphi",
-			"version": "v1.1.0",
-			"hash": "849e7a05ba16ff39ac641cfd8ede3014",
+			"version": "v1.2.0",
+			"hash": "abcae3e7ef8695c6b3a1ddc4e801fd9d",
 			"artifacts": {},
 			"failed": false,
 			"changed": false

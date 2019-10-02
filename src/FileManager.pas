@@ -2,7 +2,8 @@ unit FileManager;
 
 interface
 
-uses FileManager.Views.FileControl, Vcl.Forms, FileManager.Providers.Modulos.Imagens, FileManager.Providers.FileServer;
+uses FileManager.Views.FileControl, Vcl.Forms, FileManager.Providers.Modulos.Imagens, FileManager.Providers.FileServer, JOSE.Core.JWT,
+  System.SysUtils, FileManager.Providers.Constants, System.DateUtils, JOSE.Core.Builder;
 
 type
   TFileManager = class
@@ -16,6 +17,7 @@ type
     property MaxFileSize: Int64 write SetMaxFileSize;
     constructor Create;
     function FileServer: TFileServer;
+    function GenerateToken(const AUserName: string): string;
     property Token: string write SetToken;
     property ServerURL: string write SetServerURL;
     procedure Execute;
@@ -47,6 +49,20 @@ end;
 function TFileManager.FileServer: TFileServer;
 begin
   Result := FFileControl.FileServer;
+end;
+
+function TFileManager.GenerateToken(const AUserName: string): string;
+var
+  LToken: TJWT;
+begin
+  LToken := TJWT.Create;
+  try
+    LToken.Claims.SetClaimOfType<string>('username', AUserName);
+    LToken.Claims.Expiration := IncHour(Now);
+    Result := TJOSE.SHA256CompactToken(FILE_SERVER_SECRET_KEY, LToken);
+  finally
+    LToken.Free;
+  end;
 end;
 
 procedure TFileManager.SetMaxFileSize(const Value: Int64);

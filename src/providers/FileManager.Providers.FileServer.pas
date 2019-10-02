@@ -374,15 +374,18 @@ end;
 procedure TFileServer.Start;
 begin
   FPreviousImage.Visible := False;
-  if FMainGroup.Trim.IsEmpty then
-    Controller.CreateCadastro(FIdOrigin, FTableName, FSystemName, OnStart)
-  else
+  if not(FMainGroup.Trim.IsEmpty) and (Controller.GroupExists(FMainGroup)) then
     Controller.GetGroup(FMainGroup,
       procedure(const Response: IResponse)
       begin
         if TResponseHandler.New(FOwner).Handle(Response) then
           Controller.GetCadastro(Controller.mmtAgrupamentoCOD_CAD_AGR.AsString, OnStart);
-      end);
+      end)
+  else
+  begin
+    FMainGroup := EmptyStr;
+    Controller.CreateCadastro(FIdOrigin, FTableName, FSystemName, OnStart);
+  end;
 end;
 
 end.

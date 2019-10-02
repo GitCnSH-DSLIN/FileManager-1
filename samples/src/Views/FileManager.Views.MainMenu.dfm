@@ -2,8 +2,8 @@ object FrmServidorArquivos: TFrmServidorArquivos
   Left = 0
   Top = 0
   Caption = 'Servidor de Arquivos'
-  ClientHeight = 583
-  ClientWidth = 984
+  ClientHeight = 307
+  ClientWidth = 730
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -65,22 +65,22 @@ object FrmServidorArquivos: TFrmServidorArquivos
     Caption = 'Main Folder Name'
   end
   object lblServerURL: TLabel
-    Left = 175
-    Top = 146
+    Left = 24
+    Top = 192
     Width = 54
     Height = 13
     Caption = 'Server URL'
   end
   object Label1: TLabel
-    Left = 326
-    Top = 8
-    Width = 30
+    Left = 175
+    Top = 146
+    Width = 55
     Height = 13
-    Caption = 'Token'
+    Caption = 'User Name'
   end
   object btnExecute: TButton
     Left = 24
-    Top = 192
+    Top = 248
     Width = 145
     Height = 30
     Caption = 'Execute'
@@ -115,9 +115,9 @@ object FrmServidorArquivos: TFrmServidorArquivos
     Text = '5'
   end
   object grpFilesType: TGroupBox
-    Left = 326
-    Top = 54
-    Width = 260
+    Left = 350
+    Top = 8
+    Width = 356
     Height = 132
     Caption = 'Files Type (optional)'
     TabOrder = 7
@@ -195,8 +195,8 @@ object FrmServidorArquivos: TFrmServidorArquivos
     Text = 'Pessoa 1'
   end
   object grpPermissions: TGroupBox
-    Left = 592
-    Top = 54
+    Left = 531
+    Top = 146
     Width = 175
     Height = 132
     Caption = 'Permissions (optional)'
@@ -235,8 +235,8 @@ object FrmServidorArquivos: TFrmServidorArquivos
     end
   end
   object grpGroupPermissions: TGroupBox
-    Left = 773
-    Top = 54
+    Left = 350
+    Top = 146
     Width = 175
     Height = 132
     Caption = 'Group Permission (optional)'
@@ -283,16 +283,18 @@ object FrmServidorArquivos: TFrmServidorArquivos
     Text = 'SIA'
   end
   object edtServerURL: TEdit
-    Left = 175
-    Top = 165
-    Width = 145
+    Left = 24
+    Top = 211
+    Width = 296
     Height = 21
     TabOrder = 11
-    Text = 'http://192.168.0.54:8097/fiorilli/api/files'
+    Text = 
+      'http://192.168.0.54:8092/fileserver/fileserver.dll//fiorilli/api' +
+      '/files'
   end
   object btnClear: TButton
     Left = 175
-    Top = 192
+    Top = 248
     Width = 145
     Height = 30
     Caption = 'Clear'
@@ -301,24 +303,12 @@ object FrmServidorArquivos: TFrmServidorArquivos
     TabOrder = 12
     OnClick = btnClearClick
   end
-  object edtToken: TEdit
-    Left = 326
-    Top = 27
-    Width = 622
+  object edtUserName: TEdit
+    Left = 175
+    Top = 165
+    Width = 145
     Height = 21
-    Alignment = taRightJustify
     TabOrder = 13
-    Text = 
-      'bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJGaW9yaWxs' +
-      'aSBTL0MgU29mdHdhcmUiLCJleHAiOjE1NjUwMTM0NjgsIm5iZiI6MTU2NTAwOTU2' +
-      'OCwiaWF0IjoxNTY1MDA5ODY4LCJ0aXBvIjoiMyIsInVzZXJuYW1lIjoiQG1hdGV1' +
-      'c3JvY2hhIiwibm9tZSI6IiIsInJvbGVzIjoicGVybWl0ZV9jb250cmlidWludGVf' +
-      'dmluY3VsYWRvLHBlcm1pdGVfY29udHJpYnVpbnRlX3ZpbmN1bGFkb19tb2JpbGlh' +
-      'cmlvLHBlcm1pdGVfY29udHJpYnVpbnRlX3ZpbmN1bGFkb19pbW9iaWxpYXJpbyxw' +
-      'ZXJtaXRlX2NvbnRyaWJ1aW50ZV92aW5jdWxhZG9fYWd1YSxwZXJtaXRlX2NvbnRy' +
-      'aWJ1aW50ZV92aW5jdWxhZG9fcnVyYWwscGVybWl0ZV9jb250cmlidWludGVfdmlu' +
-      'Y3VsYWRvX2NlbWl0ZXJpbyIsImV4ZXJjaWNpbyI6IjIwMTkiLCJzdWIiOiI2Iiwi' +
-      'cGVyZmlsIjoiMCJ9.2zK1FWOuFws2iWj9agegeyWhDC3gZkX4akSVie09vyuDYMO' +
-      'NQIiRORD7rhIQC_Tz2KfSxYcfTYU4Fl9ceNPYLQ'
+    Text = '@mateusvicente'
   end
 end

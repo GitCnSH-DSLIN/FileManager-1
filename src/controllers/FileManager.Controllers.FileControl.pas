@@ -35,7 +35,7 @@ begin
     Request.Clear.SetResource('Arquivo').AddBody(FileData, False).Post(Response);
   finally
     if Request.ProcessResponse(Response) then
-      Result := Request.Response.JSONValue.GetValue<Integer>('COD_ARQ');
+      Result := Request.Response.JSONValue.GetValue<Integer>('cod_arq');
     Request.Free;
   end;
 end;
@@ -66,7 +66,7 @@ begin
         IdAnexo: string;
       begin
         if FMaxFileSize > 0 then
-          if FileItem.GetFileData.GetValue<Int64>('TAMANHO_ARQ') > FMaxFileSize then
+          if FileItem.GetFileData.GetValue<Int64>('tamanho_arq') > FMaxFileSize then
           begin
             Response.SetError('O tamanho máximo permitido é de ' + FormatFileSize(FMaxFileSize));
             Exit;

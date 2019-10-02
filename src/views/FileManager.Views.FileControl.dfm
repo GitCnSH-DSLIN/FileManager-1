@@ -108,7 +108,7 @@ object FrmFileControl: TFrmFileControl
           ExplicitTop = 8
           ExplicitWidth = 776
         end
-        object imgClose: TImage
+        object imgClose01: TImage
           AlignWithMargins = True
           Left = 754
           Top = 7
@@ -149,7 +149,7 @@ object FrmFileControl: TFrmFileControl
             8BFC06344A4A4457E61D970000000049454E44AE426082}
           Proportional = True
           Transparent = True
-          OnClick = imgCloseClick
+          OnClick = imgClose01Click
         end
         object imgPreviousFolder: TImage
           Left = 10
@@ -1702,21 +1702,6 @@ object FrmFileControl: TFrmFileControl
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 2
-        object pnlFileList: TPanel
-          Left = 0
-          Top = 23
-          Width = 792
-          Height = 321
-          Align = alClient
-          BevelOuter = bvNone
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'Segoe UI'
-          Font.Style = []
-          ParentFont = False
-          TabOrder = 0
-        end
         object pnlHeaderFileList: TPanel
           AlignWithMargins = True
           Left = 0
@@ -1734,7 +1719,7 @@ object FrmFileControl: TFrmFileControl
           Font.Name = 'Segoe UI'
           Font.Style = []
           ParentFont = False
-          TabOrder = 1
+          TabOrder = 0
           object lblDescricao: TLabel
             AlignWithMargins = True
             Left = 46
@@ -1812,6 +1797,21 @@ object FrmFileControl: TFrmFileControl
             Caption = '*'
             Layout = tlCenter
           end
+        end
+        object pnlFileList: TScrollBox
+          Left = 0
+          Top = 23
+          Width = 792
+          Height = 321
+          Align = alClient
+          BevelInner = bvNone
+          BevelOuter = bvNone
+          BorderStyle = bsNone
+          Color = clWhite
+          ParentColor = False
+          TabOrder = 1
+          OnMouseWheelDown = pnlFileListMouseWheelDown
+          OnMouseWheelUp = pnlFileListMouseWheelUp
         end
       end
     end
@@ -3374,6 +3374,49 @@ object FrmFileControl: TFrmFileControl
           Transparent = True
           OnClick = imgBackClick
         end
+        object imgClose02: TImage
+          AlignWithMargins = True
+          Left = 754
+          Top = 7
+          Width = 20
+          Height = 20
+          Cursor = crHandPoint
+          Margins.Left = 0
+          Margins.Top = 12
+          Margins.Right = 16
+          Margins.Bottom = 17
+          Center = True
+          Picture.Data = {
+            0B546478504E47496D61676589504E470D0A1A0A0000000D4948445200000040
+            000000400806000000AA6971DE000000097048597300000B1300000B1301009A
+            9C18000002DD49444154789CED9ACF6AD5401487BF73EFCED23E8E694A5D15B1
+            2F242AB5B4D25611DF470A82EE6E323E8D9476DBE342472E656E3249E6CC44C8
+            6F994926F37DE4EF9981254B962C59D29FA669CE9C7375E971F4A56DDBE3B66D
+            DFC5EEBF8AECF44A44AE55F576CE12DAB63D06BE021F9D731731C74844A757C0
+            FBAD4D7722725A5555336E9836D982DFF7DB44E4B2AAAA0F5DC7750A08C0FBCC
+            4A4208DEA74FC24E011DF03EB390D005EFD3252128A0699A3311B98E387F5109
+            31F03EAAFAB6AEEBCF4FB7071F82ABD5EA3B7017318683520FC621F0C02F55FD
+            116AD8790B38E76A55BD050E224E90F54A180AFFF8F8F8EAE8E8E867A8B1F321
+            38470929E121E235382709A9E1214200CC4382053C440A80B212ACE061800028
+            23C1121E060A80BC12ACE1618400C82321073C8C1400B61272C1C30401602321
+            273C4C14006925E486870402208D8412F09048004C93500A1E120A8071125475
+            4D2178482C0086491091074054F55944D7C9E1C140000CBE126262020F460220
+            A9043378301400492498C283B1009824C11C1E3208803F12806FAABA17B3BFAA
+            DEABEA89353C44CE0C4DCDDF575DB46C1191F57ABD361CD2BF980BF01F3991AF
+            3A9FBD5CD566D35B60E0175E28E68556330109E07D4C2598084808EF632621F9
+            3360E074D53DF010D1ADD90C54520123A6AB4E44E42505A7E192DD02537E694B
+            96DC930848F13F5F4AC26401298B1925244C126051C9C92D61B400CB32564E09
+            A304E4A8E1E592305840CE02660E09830494A8DE5A4B881650B2746D29214A40
+            49781F2B09312B458BC3FB5848E85B293A1B789FD412BA568ACE0EDE27A584A0
+            8039C3FBA492B0EB77F805338607A8AAAA119153E27EA5F781E3504350C0E1E1
+            E12711B9ECE9B418BC4FA40455D5F3AAAABE841AFB568A5EA8EA65A0A938FC76
+            3A6E0755D5F3BAAE6F761D1BB352F4A98459C1FB0424F4C243FC4A512F6196F0
+            3E5B12F663E007A5699A379BCDE679B20E8DE29CAB9D73AF4B8F63C992254BFE
+            8BFC06344A4A4457E61D970000000049454E44AE426082}
+          Proportional = True
+          Transparent = True
+          OnClick = imgClose02Click
+        end
       end
       object pnlFiles: TPanel
         Left = 0
@@ -3406,33 +3449,32 @@ object FrmFileControl: TFrmFileControl
           Layout = tlCenter
           ExplicitTop = 43
         end
-        object pnlContentFiles: TPanel
-          AlignWithMargins = True
-          Left = 392
-          Top = 89
-          Width = 400
-          Height = 265
-          Margins.Left = 0
-          Margins.Top = 46
-          Margins.Right = 0
-          Margins.Bottom = 46
-          Align = alRight
+        object pnlDragToUpload: TPanel
+          Left = 0
+          Top = 43
+          Width = 392
+          Height = 357
+          Align = alClient
           BevelOuter = bvNone
-          Color = clWhite
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'Segoe UI'
-          Font.Style = []
-          ParentBackground = False
-          ParentFont = False
-          ShowCaption = False
           TabOrder = 0
+        end
+        object pnlContentFiles: TScrollBox
+          Left = 392
+          Top = 43
+          Width = 400
+          Height = 357
+          Align = alRight
+          BevelInner = bvNone
+          BevelOuter = bvNone
+          BorderStyle = bsNone
+          TabOrder = 1
+          OnMouseWheelDown = pnlContentFilesMouseWheelDown
+          OnMouseWheelUp = pnlContentFilesMouseWheelUp
           object lblZeroFiles: TLabel
             Left = 0
             Top = 0
             Width = 400
-            Height = 265
+            Height = 357
             Align = alClient
             Alignment = taCenter
             AutoSize = False
@@ -3451,15 +3493,6 @@ object FrmFileControl: TFrmFileControl
             ExplicitWidth = 383
             ExplicitHeight = 308
           end
-        end
-        object pnlDragToUpload: TPanel
-          Left = 0
-          Top = 43
-          Width = 392
-          Height = 357
-          Align = alClient
-          BevelOuter = bvNone
-          TabOrder = 1
         end
       end
       object pnlFooterUpload: TPanel

@@ -4,6 +4,7 @@ interface
 
 const
   REQUEST_ERROR_MESSAGE = 'Não foi possível processar a requisição!';
+  FILE_SERVER_SECRET_KEY = 'a2V5X2Jhc2U2NF9mb3JtYXRfZmlvcmlsbGlfc29mdHdhcmVfYXBwOmZpbGVfc2VydmVy';
 
 type
   TResponseCode = record

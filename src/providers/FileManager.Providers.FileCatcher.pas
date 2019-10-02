@@ -2,7 +2,7 @@ unit FileManager.Providers.FileCatcher;
 
 interface
 
-uses ShellAPI, Winapi.Windows;
+uses Winapi.ShellAPI, Winapi.Windows;
 
 type
   TFileCatcher = class(TObject)

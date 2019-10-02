@@ -69,6 +69,7 @@ type
     procedure DownloadFile(const IdFile: string; const CallBack: TResponseCallBack);
     procedure DeleteFiles(const IdFile: string; const CallBack: TResponseCallBack);
     procedure DeleteGroup(const IdGroup: string; const CallBack: TResponseCallBack);
+    function GroupExists(const IdGroup: string): Boolean;
   end;
 
 implementation
@@ -101,7 +102,7 @@ begin
           Request.SetResource('Agrupamento').AddBody(mmtAgrupamento.ToJSONObject).POST(Response);
         finally
           if Request.ProcessResponse(Response) then
-            mmtAgrupamento.MergeFromJSONObject(Request.Response.JSONValue.GetValue<TJSONObject>);
+            mmtAgrupamento.MergeFromJSONObject(Request.Response.JSONValue.GetValue<TJSONObject>, False);
           Request.Free;
         end;
       end)
@@ -136,7 +137,7 @@ begin
           Request.SetResource('Cadastro').AddBody(mmtCadastro.ToJSONObject).POST(Response);
         finally
           if Request.ProcessResponse(Response) then
-            mmtCadastro.MergeFromJSONObject(Request.Response.JSONValue.GetValue<TJSONObject>);
+            mmtCadastro.MergeFromJSONObject(Request.Response.JSONValue.GetValue<TJSONObject>, False);
           Request.Free;
         end;
       end)
@@ -170,7 +171,7 @@ begin
           Request.SetResource('Pasta').AddBody(mmtPastas.ToJSONObject).POST(Response);
         finally
           if Request.ProcessResponse(Response) then
-            mmtPastas.MergeFromJSONObject(Request.Response.JSONValue.GetValue<TJSONObject>);
+            mmtPastas.MergeFromJSONObject(Request.Response.JSONValue.GetValue<TJSONObject>, False);
           Request.Free;
         end;
       end)
@@ -281,7 +282,7 @@ begin
           Request.SetResource('Agrupamento/{Id}').AddParam('Id', IdGroup, pkURLSEGMENT).GET(Response);
         finally
           if Request.ProcessResponse(Response, True) then
-            mmtAgrupamento.LoadFromJSON(Request.Response.JSONValue.GetValue<TJSONObject>);
+            mmtAgrupamento.LoadFromJSON(Request.Response.JSONValue.GetValue<TJSONObject>, False);
           Request.Free;
         end;
       end)
@@ -311,7 +312,7 @@ begin
           Request.SetResource('Cadastro/{Id}/Agrupamentos').AddParam('Id', mmtCadastroCOD_CAD.AsString, pkURLSEGMENT).AddParam('raiz', 'S').GET(Response);
         finally
           if Request.ProcessResponse(Response, True) then
-            mmtAgrupamento.LoadFromJSON(Request.Response.JSONValue.GetValue<TJSONArray>);
+            mmtAgrupamento.LoadFromJSON(Request.Response.JSONValue.GetValue<TJSONArray>, False);
           Request.Free;
         end;
       end)
@@ -341,7 +342,7 @@ begin
           Request.Clear.SetResource('Pasta/{Id}/Arquivos').AddParam('Id', IdFolder, pkURLSEGMENT).GET(Response);
         finally
           if Request.ProcessResponse(Response, True) then
-            mmtArquivos.LoadFromJSON(Request.Response.JSONValue.GetValue<TJSONArray>);
+            mmtArquivos.LoadFromJSON(Request.Response.JSONValue.GetValue<TJSONArray>, False);
           Request.Free;
         end;
       end)
@@ -371,7 +372,7 @@ begin
           Request.SetResource('Cadastro/{Id}').AddParam('Id', Codigo, pkURLSEGMENT).GET(Response);
         finally
           if Request.ProcessResponse(Response, True) then
-            mmtCadastro.LoadFromJSON(Request.Response.JSONValue.GetValue<TJSONObject>);
+            mmtCadastro.LoadFromJSON(Request.Response.JSONValue.GetValue<TJSONObject>, False);
           Request.Free;
         end;
       end)
@@ -401,7 +402,7 @@ begin
           Request.SetResource('Agrupamento/{Id}/Pastas').AddParam('Id', mmtAgrupamentoCOD_AGR.AsString, pkURLSEGMENT).GET(Response);
         finally
           if Request.ProcessResponse(Response, True) then
-            mmtPastas.LoadFromJSON(Request.Response.JSONValue.GetValue<TJSONArray>);
+            mmtPastas.LoadFromJSON(Request.Response.JSONValue.GetValue<TJSONArray>, False);
           Request.Free;
         end;
       end)
@@ -431,7 +432,7 @@ begin
           Request.SetResource('Agrupamento/{Id}/SubPastas').AddParam('Id', IdGroup, pkURLSEGMENT).GET(Response);
         finally
           if Request.ProcessResponse(Response, True) then
-            mmtPastas.LoadFromJSON(Request.Response.JSONValue.GetValue<TJSONArray>);
+            mmtPastas.LoadFromJSON(Request.Response.JSONValue.GetValue<TJSONArray>, False);
           Request.Free;
         end;
       end)
@@ -441,6 +442,19 @@ begin
         CallBack(Response);
       end)
     .Start;
+end;
+
+function TControllerFileManager.GroupExists(const IdGroup: string): Boolean;
+var
+  Request: TRequest;
+begin
+  Request := TRequest.Create(GetServerURL, GetToken);
+  try
+    Request.SetResource('Agrupamento/{Id}').AddParam('Id', IdGroup, pkURLSEGMENT).GET(nil);
+  finally
+    Result := (Request.Response.StatusCode <> TResponseCode.NotFound);
+    Request.Free;
+  end;
 end;
 
 procedure TControllerFileManager.DownloadFile(const IdFile: string; const CallBack: TResponseCallBack);
@@ -501,7 +515,7 @@ begin
       begin
         Request := TRequest.Create(GetServerURL, GetToken);
         try
-          Request.SetResource('Arquivo/{Id}').AddParam('Id', FileData.GetValue<string>('COD_ARQ'), pkURLSEGMENT).AddBody(FileData, False).PUT(Response);
+          Request.SetResource('Arquivo/{Id}').AddParam('Id', FileData.GetValue<string>('cod_arq'), pkURLSEGMENT).AddBody(FileData, False).PUT(Response);
         finally
           Request.ProcessResponse(Response);
           Request.Free;
@@ -529,7 +543,7 @@ begin
       begin
         Request := TRequest.Create(GetServerURL, GetToken);
         try
-          Request.SetResource('Pasta/{Id}').AddParam('Id', FolderData.GetValue<string>('COD_PAS'), pkURLSEGMENT).AddBody(FolderData, AOwns).PUT(Response);
+          Request.SetResource('Pasta/{Id}').AddParam('Id', FolderData.GetValue<string>('cod_pas'), pkURLSEGMENT).AddBody(FolderData, AOwns).PUT(Response);
         finally
           Request.ProcessResponse(Response);
           Request.Free;
@@ -557,7 +571,7 @@ begin
       begin
         Request := TRequest.Create(GetServerURL, GetToken);
         try
-          Request.SetResource('Agrupamento/{Id}').AddParam('Id', GroupData.GetValue<string>('COD_AGR'), pkURLSEGMENT).AddBody(GroupData).PUT(Response);
+          Request.SetResource('Agrupamento/{Id}').AddParam('Id', GroupData.GetValue<string>('cod_agr'), pkURLSEGMENT).AddBody(GroupData).PUT(Response);
         finally
           Request.ProcessResponse(Response);
           Request.Free;
